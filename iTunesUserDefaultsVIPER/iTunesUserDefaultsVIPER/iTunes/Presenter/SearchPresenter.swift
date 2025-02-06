@@ -1,0 +1,48 @@
+//
+//  SearchPresenter.swift
+//  iTunesUserDefaultsVIPER
+//
+//  Created by Ибрагим Габибли on 05.02.2025.
+//
+
+import Foundation
+import UIKit
+
+protocol SearchPresenterProtocol: AnyObject {
+    func searchAlbums(with searchTerm: String)
+    func didFetchAlbums(_ albums: [Album])
+    func didFailToFetchAlbums(_ error: String)
+    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void)
+    func didSelectAlbum(_ album: Album)
+    func showSearchHistory()
+}
+
+final class SearchPresenter: SearchPresenterProtocol {
+    weak var view: SearchViewProtocol?
+    var interactor: SearchInteractorProtocol?
+    var router: SearchRouterProtocol?
+
+    func searchAlbums(with searchTerm: String) {
+        interactor?.searchAlbums(with: searchTerm)
+    }
+
+    func didFetchAlbums(_ albums: [Album]) {
+        view?.updateAlbums(albums)
+    }
+
+    func didFailToFetchAlbums(_ error: String) {
+        view?.showError(error)
+    }
+
+    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
+        interactor?.loadImage(for: album, completion: completion)
+    }
+
+    func didSelectAlbum(_ album: Album) {
+        router?.navigateToAlbumDetails(with: album)
+    }
+
+    func showSearchHistory() {
+        router?.navigateToSearchHistory()
+    }
+}

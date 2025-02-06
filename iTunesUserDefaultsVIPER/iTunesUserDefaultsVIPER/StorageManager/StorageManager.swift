@@ -8,10 +8,8 @@
 import Foundation
 import UIKit
 
-final class StorageManager {
-    static let shared = StorageManager()
+final class StorageManager: StorageManagerProtocol {
     private let historyKey = "searchHistory"
-    private init() {}
 
     func saveAlbums(_ albums: [Album], for searchTerm: String) {
         do {

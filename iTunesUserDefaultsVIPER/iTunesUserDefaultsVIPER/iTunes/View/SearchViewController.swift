@@ -36,6 +36,8 @@ final class SearchViewController: UIViewController {
         return collectionView
     }()
 
+    var presenter: SearchPresenterProtocol!
+    var storageManager: StorageManagerProtocol!
     var albums = [Album]()
 
     override func viewDidLoad() {
@@ -59,27 +61,19 @@ final class SearchViewController: UIViewController {
             make.horizontalEdges.equalToSuperview()
         }
     }
+}
 
-    func searchAlbums(with term: String) {
-        if let savedAlbums = StorageManager.shared.loadAlbums(for: term) {
-            albums = savedAlbums
-            collectionView.reloadData()
-            return
-        }
+// MARK: - SearchViewProtocol
+extension SearchViewController: SearchViewProtocol {
+    func updateAlbums(_ albums: [Album]) {
+        self.albums = albums
+        collectionView.reloadData()
+    }
 
-        NetworkManager.shared.fetchAlbums(albumName: term) { [weak self] result in
-            switch result {
-            case .success(let albums):
-                DispatchQueue.main.async {
-                    self?.albums = albums.sorted { $0.collectionName < $1.collectionName }
-                    self?.collectionView.reloadData()
-                    StorageManager.shared.saveAlbums(albums, for: term)
-                    print("Successfully loaded \(albums.count) albums.")
-                }
-            case .failure(let error):
-                print("Failed to load images with error: \(error.localizedDescription)")
-            }
-        }
+    func showError(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
 
@@ -99,16 +93,17 @@ extension SearchViewController: UICollectionViewDataSource {
         }
 
         let album = albums[indexPath.item]
-        let urlString = album.artworkUrl100
 
-        NetworkManager.shared.loadImage(from: urlString) { loadedImage in
+        presenter.loadImage(for: album) { image in
             DispatchQueue.main.async {
-                guard let cell = collectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell  else {
+                guard let currentCell = collectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell else {
                     return
                 }
-                cell.configure(with: album, image: loadedImage)
+
+                currentCell.configure(with: album, image: image)
             }
         }
+
         return cell
     }
 }
@@ -116,11 +111,11 @@ extension SearchViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        let albumViewController = AlbumViewController()
         let album = albums[indexPath.item]
-        albumViewController.album = album
-        navigationController?.pushViewController(albumViewController, animated: true)
+        let searchViewController = SearchRouter()
+
+        searchViewController.navigateToAlbumDetails(with: album)
+        //presenter.didSelectAlbum(albums[indexPath.row])
     }
 }
 
@@ -131,7 +126,8 @@ extension SearchViewController: UISearchBarDelegate {
         guard let searchTerm = searchBar.text, !searchTerm.isEmpty else {
             return
         }
-        StorageManager.shared.saveSearchTerm(searchTerm)
-        searchAlbums(with: searchTerm)
+        
+        storageManager?.saveSearchTerm(searchTerm)
+        presenter?.searchAlbums(with: searchTerm)
     }
 }

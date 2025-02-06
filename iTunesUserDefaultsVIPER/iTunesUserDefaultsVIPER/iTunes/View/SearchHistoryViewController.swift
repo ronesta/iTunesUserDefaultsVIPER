@@ -15,6 +15,7 @@ final class SearchHistoryViewController: UIViewController {
     }()
     private let id = "cell"
     var searchHistory = [String]()
+    var presenter: SearchHistoryPresenterProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +25,7 @@ final class SearchHistoryViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateSearchHistory()
+        presenter?.loadSearchHistory()
     }
 
     private func setupNavigationBar() {
@@ -43,13 +44,17 @@ final class SearchHistoryViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
+}
 
-    func updateSearchHistory() {
-        searchHistory = StorageManager.shared.getSearchHistory()
-        self.tableView.reloadData()
+// MARK: - SearchHistoryViewProtocol
+extension SearchHistoryViewController: SearchHistoryViewProtocol {
+    func updateSearchHistory(_ history: [String]) {
+        self.searchHistory = history
+        tableView.reloadData()
     }
 }
 
+// MARK: - UITableViewDataSource
 extension SearchHistoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         searchHistory.count
@@ -62,6 +67,7 @@ extension SearchHistoryViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SearchHistoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -70,9 +76,9 @@ extension SearchHistoryViewController: UITableViewDelegate {
     }
 
     func performSearch(for term: String) {
-        let searchViewController = SearchViewController()
-        searchViewController.searchBar.isHidden = true
-        searchViewController.searchAlbums(with: term)
-        navigationController?.pushViewController(searchViewController, animated: true)
+        let searchViewController = SearchRouter()
+
+        searchViewController.navigateToSearchHistory()
+
     }
 }

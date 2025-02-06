@@ -39,6 +39,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         tabBarController.tabBar.barTintColor = .white
 
+//        let searchViewController = SearchRouter.createModule()
+//        let navigationController = UINavigationController(rootViewController: searchViewController)
+//        window?.rootViewController = navigationController
+
         window.rootViewController = tabBarController
         self.window = window
         window.makeKeyAndVisible()
