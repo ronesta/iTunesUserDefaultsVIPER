@@ -10,7 +10,6 @@ import UIKit
 
 protocol SearchRouterProtocol: AnyObject {
     func navigateToAlbumDetails(with album: Album)
-    func navigateToSearchHistory()
 }
 
 final class SearchRouter: SearchRouterProtocol {
@@ -43,18 +42,15 @@ final class SearchRouter: SearchRouterProtocol {
         viewController?.navigationController?.pushViewController(albumVC, animated: true)
     }
 
-    func navigateToSearchHistory() {
-        let historyVC = SearchHistoryRouter.createModule()
-        viewController?.navigationController?.pushViewController(historyVC, animated: true)
-    }
+    func performSearch(for term: String) {
+        let searchViewController = SearchRouter.createModule()
+        guard let rootViewController = searchViewController as? SearchViewController else {
+            return
+        }
 
-//    func navigateToAlbumDetails(with album: Album) {
-//        let albumDetailsVC = AlbumDetailsModuleBuilder.build(with: album)
-//        viewController?.navigationController?.pushViewController(albumDetailsVC, animated: true)
-//    }
-//
-//    func navigateToSearchHistory() {
-//        let searchHistoryVC = SearchHistoryModuleBuilder.build()
-//        viewController?.navigationController?.pushViewController(searchHistoryVC, animated: true)
-//    }
+        rootViewController.searchBar.isHidden = true
+        rootViewController.presenter?.searchAlbums(with: term)
+
+        viewController?.navigationController?.pushViewController(rootViewController, animated: true)
+    }
 }

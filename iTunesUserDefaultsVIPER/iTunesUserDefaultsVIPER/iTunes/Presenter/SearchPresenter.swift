@@ -14,7 +14,6 @@ protocol SearchPresenterProtocol: AnyObject {
     func didFailToFetchAlbums(_ error: String)
     func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void)
     func didSelectAlbum(_ album: Album)
-    func showSearchHistory()
 }
 
 final class SearchPresenter: SearchPresenterProtocol {
@@ -46,9 +45,5 @@ final class SearchPresenter: SearchPresenterProtocol {
 
     func didSelectAlbum(_ album: Album) {
         router?.navigateToAlbumDetails(with: album)
-    }
-
-    func showSearchHistory() {
-        router?.navigateToSearchHistory()
     }
 }
