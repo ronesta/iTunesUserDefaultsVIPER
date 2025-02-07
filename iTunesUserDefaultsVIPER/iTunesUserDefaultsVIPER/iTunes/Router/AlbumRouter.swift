@@ -14,16 +14,22 @@ protocol AlbumRouterProtocol: AnyObject {
 
 final class AlbumRouter: AlbumRouterProtocol {
     static func createModule(with album: Album) -> UIViewController {
+        let storageManager = StorageManager()
+        let networkManager = NetworkManager(storageManager: storageManager)
+
         let view = AlbumViewController()
-        let presenter = AlbumPresenter(album: album)
         let interactor = AlbumInteractor()
-        //let router = AlbumRouter()
+        let router = AlbumRouter()
+        let presenter = AlbumPresenter(interactor: interactor,
+                                       router: router,
+                                       album: album
+        )
 
         view.presenter = presenter
         presenter.view = view
-        presenter.interactor = interactor
-        //presenter.router = router
+
         interactor.presenter = presenter
+        interactor.networkManager = networkManager
 
         return view
     }

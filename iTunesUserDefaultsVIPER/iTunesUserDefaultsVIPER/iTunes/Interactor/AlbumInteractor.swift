@@ -9,21 +9,22 @@ import Foundation
 import UIKit
 
 protocol AlbumInteractorProtocol: AnyObject {
-    func loadAlbumDetails(for album: Album, image: UIImage)
+    func loadAlbumDetails(for album: Album)
 }
 
 final class AlbumInteractor: AlbumInteractorProtocol {
     var presenter: AlbumPresenterProtocol?
     var networkManager: NetworkManagerProtocol?
 
-    func loadAlbumDetails(for album: Album, image: UIImage) {
+    func loadAlbumDetails(for album: Album) {
         networkManager?.loadImage(from: album.artworkUrl100) { [weak self] loadedImage in
 
-            guard let self else {
+            guard let self,
+            let loadedImage else {
                 return
             }
 
-            presenter?.didFetchAlbumDetails(album: album, image: loadedImage ?? UIImage())
+            presenter?.didFetchAlbumDetails(album: album, image: loadedImage)
         }
     }
 }

@@ -17,16 +17,22 @@ final class SearchRouter: SearchRouterProtocol {
     weak var viewController: UIViewController?
 
     static func createModule() -> UIViewController {
+        let storageManager = StorageManager()
+        let networkManager = NetworkManager(storageManager: storageManager)
+
         let view = SearchViewController()
         let interactor = SearchInteractor()
-        let presenter = SearchPresenter()
         let router = SearchRouter()
+        let presenter = SearchPresenter(view: view,
+                                        interactor: interactor,
+                                        router: router
+        )
 
         view.presenter = presenter
-        presenter.view = view
-        presenter.interactor = interactor
-        presenter.router = router
+        view.storageManager = storageManager
         interactor.presenter = presenter
+        interactor.networkManager = networkManager
+        interactor.storageManager = storageManager
         router.viewController = view
 
         return view

@@ -16,15 +16,20 @@ protocol AlbumPresenterProtocol: AnyObject {
 final class AlbumPresenter: AlbumPresenterProtocol {
     weak var view: AlbumViewProtocol?
     var interactor: AlbumInteractorProtocol?
-    //var router: AlbumRouterProtocol?
+    var router: AlbumRouterProtocol?
     private let album: Album
 
-    init(album: Album) {
+    init(interactor: AlbumInteractorProtocol?,
+         router: AlbumRouterProtocol?,
+         album: Album
+    ) {
+        self.interactor = interactor
+        self.router = router
         self.album = album
     }
 
     func loadAlbumDetails() {
-        //interactor?.fetchAlbumDetails(for: album)
+        interactor?.loadAlbumDetails(for: album)
     }
 
     func didFetchAlbumDetails(album: Album, image: UIImage) {

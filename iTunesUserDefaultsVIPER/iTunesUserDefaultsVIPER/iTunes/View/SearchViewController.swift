@@ -36,8 +36,8 @@ final class SearchViewController: UIViewController {
         return collectionView
     }()
 
-    var presenter: SearchPresenterProtocol!
-    var storageManager: StorageManagerProtocol!
+    var presenter: SearchPresenterProtocol?
+    var storageManager: StorageManagerProtocol?
     var albums = [Album]()
 
     override func viewDidLoad() {
@@ -94,7 +94,7 @@ extension SearchViewController: UICollectionViewDataSource {
 
         let album = albums[indexPath.item]
 
-        presenter.loadImage(for: album) { image in
+        presenter?.loadImage(for: album) { image in
             DispatchQueue.main.async {
                 guard let currentCell = collectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell else {
                     return
@@ -114,8 +114,8 @@ extension SearchViewController: UICollectionViewDelegate {
         let album = albums[indexPath.item]
         let searchViewController = SearchRouter()
 
+        presenter?.didSelectAlbum(albums[indexPath.row])
         searchViewController.navigateToAlbumDetails(with: album)
-        //presenter.didSelectAlbum(albums[indexPath.row])
     }
 }
 
@@ -126,7 +126,7 @@ extension SearchViewController: UISearchBarDelegate {
         guard let searchTerm = searchBar.text, !searchTerm.isEmpty else {
             return
         }
-        
+
         storageManager?.saveSearchTerm(searchTerm)
         presenter?.searchAlbums(with: searchTerm)
     }

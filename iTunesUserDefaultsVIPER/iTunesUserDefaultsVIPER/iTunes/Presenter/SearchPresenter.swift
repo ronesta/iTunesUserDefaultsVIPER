@@ -22,6 +22,12 @@ final class SearchPresenter: SearchPresenterProtocol {
     var interactor: SearchInteractorProtocol?
     var router: SearchRouterProtocol?
 
+    init(view: SearchViewProtocol?, interactor: SearchInteractorProtocol?, router: SearchRouterProtocol?) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+    }
+
     func searchAlbums(with searchTerm: String) {
         interactor?.searchAlbums(with: searchTerm)
     }

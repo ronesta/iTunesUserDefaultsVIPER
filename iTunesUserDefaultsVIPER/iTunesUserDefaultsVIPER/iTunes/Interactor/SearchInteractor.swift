@@ -15,7 +15,6 @@ protocol SearchInteractorProtocol: AnyObject {
 
 final class SearchInteractor: SearchInteractorProtocol {
     var presenter: SearchPresenterProtocol!
-    // weak var presenter: SearchInteractorOutputProtocol?
     var networkManager: NetworkManagerProtocol!
     var storageManager: StorageManagerProtocol!
 

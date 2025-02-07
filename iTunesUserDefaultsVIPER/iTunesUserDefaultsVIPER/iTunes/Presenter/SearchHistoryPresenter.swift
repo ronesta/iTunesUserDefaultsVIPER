@@ -18,6 +18,15 @@ class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
     var interactor: SearchHistoryInteractorProtocol?
     var router: SearchHistoryRouterProtocol?
 
+    init(view: SearchHistoryViewProtocol?,
+         interactor: SearchHistoryInteractorProtocol?,
+         router: SearchHistoryRouterProtocol?
+    ) {
+        self.view = view
+        self.interactor = interactor
+        self.router = router
+    }
+
     func loadSearchHistory() {
         interactor?.loadSearchHistory()
     }

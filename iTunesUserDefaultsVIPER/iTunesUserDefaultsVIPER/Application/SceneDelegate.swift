@@ -17,32 +17,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 
-        let searchViewController = SearchViewController()
-        let searchNavigationController = UINavigationController(rootViewController: searchViewController)
-        let searchTabBarItem = UITabBarItem(title: "Search",
-                                            image: UIImage(systemName: "magnifyingglass"),
-                                            tag: 0)
-        searchTabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16)], for: .normal)
-        searchNavigationController.tabBarItem = searchTabBarItem
+        // MARK: - viewControllers
+        let searchViewController = SearchModuleBuilder.build()
+        let searchHistoryViewController = SearchHistoryBuilder.build()
 
-        let historyViewController = SearchHistoryViewController()
-        let historyNavigationController = UINavigationController(rootViewController: historyViewController)
-        let historyTabBarItem = UITabBarItem(title: "History",
-                                             image: UIImage(systemName: "clock"),
-                                             tag: 1)
-        historyTabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16)], for: .normal)
-        historyNavigationController.tabBarItem = historyTabBarItem
-
+        // MARK: - UITabBarController
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [searchNavigationController,
-                                            historyNavigationController]
-
+        tabBarController.viewControllers = [searchViewController, searchHistoryViewController]
         tabBarController.tabBar.barTintColor = .white
 
-//        let searchViewController = SearchRouter.createModule()
-//        let navigationController = UINavigationController(rootViewController: searchViewController)
-//        window?.rootViewController = navigationController
-
+        // MARK: - UIWindow
         window.rootViewController = tabBarController
         self.window = window
         window.makeKeyAndVisible()
