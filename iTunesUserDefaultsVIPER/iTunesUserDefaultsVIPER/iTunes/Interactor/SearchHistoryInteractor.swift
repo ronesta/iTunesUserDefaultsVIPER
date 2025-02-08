@@ -7,11 +7,7 @@
 
 import Foundation
 
-protocol SearchHistoryInteractorProtocol: AnyObject {
-    func loadSearchHistory()
-}
-
-class SearchHistoryInteractor: SearchHistoryInteractorProtocol {
+final class SearchHistoryInteractor: SearchHistoryInteractorProtocol {
     var presenter: SearchHistoryPresenterProtocol?
     var storageManager: StorageManagerProtocol?
 

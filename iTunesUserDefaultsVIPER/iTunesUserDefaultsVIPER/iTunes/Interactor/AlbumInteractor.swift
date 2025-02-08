@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-protocol AlbumInteractorProtocol: AnyObject {
-    func loadAlbumDetails(for album: Album)
-}
-
 final class AlbumInteractor: AlbumInteractorProtocol {
     var presenter: AlbumPresenterProtocol?
     var networkManager: NetworkManagerProtocol?

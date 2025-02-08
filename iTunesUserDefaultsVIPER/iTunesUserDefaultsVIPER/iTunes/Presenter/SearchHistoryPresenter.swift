@@ -7,16 +7,10 @@
 
 import Foundation
 
-protocol SearchHistoryPresenterProtocol: AnyObject {
-    func loadSearchHistory()
-    func didFetchSearchHistory(_ history: [String])
-    func didSelectSearchTerm(_ searchTerm: String)
-}
-
-class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
+final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
     weak var view: SearchHistoryViewProtocol?
-    var interactor: SearchHistoryInteractorProtocol?
-    var router: SearchHistoryRouterProtocol?
+    private let interactor: SearchHistoryInteractorProtocol?
+    private let router: SearchHistoryRouterProtocol?
 
     init(view: SearchHistoryViewProtocol?,
          interactor: SearchHistoryInteractorProtocol?,
@@ -33,9 +27,5 @@ class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
 
     func didFetchSearchHistory(_ history: [String]) {
         view?.updateSearchHistory(history)
-    }
-
-    func didSelectSearchTerm(_ searchTerm: String) {
-        router?.navigateBackToSearchWithTerm(searchTerm)
     }
 }

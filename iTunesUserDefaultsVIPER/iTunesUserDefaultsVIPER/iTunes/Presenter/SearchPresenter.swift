@@ -8,18 +8,10 @@
 import Foundation
 import UIKit
 
-protocol SearchPresenterProtocol: AnyObject {
-    func searchAlbums(with searchTerm: String)
-    func didFetchAlbums(_ albums: [Album])
-    func didFailToFetchAlbums(_ error: String)
-    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void)
-    func didSelectAlbum(_ album: Album)
-}
-
 final class SearchPresenter: SearchPresenterProtocol {
     weak var view: SearchViewProtocol?
-    var interactor: SearchInteractorProtocol?
-    var router: SearchRouterProtocol?
+    private let interactor: SearchInteractorProtocol?
+    private let router: SearchRouterProtocol?
 
     init(view: SearchViewProtocol?, interactor: SearchInteractorProtocol?, router: SearchRouterProtocol?) {
         self.view = view

@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         // MARK: - viewControllers
-        let searchViewController = SearchModuleBuilder.build()
-        let searchHistoryViewController = SearchHistoryBuilder.build()
+        let searchViewController = SearchRouter.createModule()
+        let searchHistoryViewController = SearchHistoryRouter.createModule()
 
         // MARK: - UITabBarController
         let tabBarController = UITabBarController()

@@ -8,16 +8,12 @@
 import Foundation
 import UIKit
 
-protocol SearchHistoryRouterProtocol: AnyObject {
-    func navigateBackToSearchWithTerm(_ searchTerm: String)
-}
-
-class SearchHistoryRouter: SearchHistoryRouterProtocol {
+final class SearchHistoryRouter: SearchHistoryRouterProtocol {
     weak var viewController: UIViewController?
 
-    static func createModule() -> SearchHistoryViewController {
+    static func createModule() -> UIViewController {
         let storageManager = StorageManager()
-        
+
         let view = SearchHistoryViewController()
         let interactor = SearchHistoryInteractor()
         let router = SearchHistoryRouter()
@@ -25,23 +21,33 @@ class SearchHistoryRouter: SearchHistoryRouterProtocol {
                                                interactor: interactor,
                                                router: router
         )
+        let tableViewDataSource = SearchHistoryTableViewDataSource()
 
         view.presenter = presenter
-        presenter.view = view
-        presenter.interactor = interactor
-        presenter.router = router
+        view.tableViewDataSource = tableViewDataSource
         interactor.presenter = presenter
         interactor.storageManager = storageManager
         router.viewController = view
 
-        return view
+        let navigationController = UINavigationController(rootViewController: view)
+        let tabBarItem = UITabBarItem(title: "History",
+                                      image: UIImage(systemName: "clock"),
+                                      tag: 1)
+        tabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16)], for: .normal)
+        navigationController.tabBarItem = tabBarItem
+
+        return navigationController
     }
 
-    func navigateBackToSearchWithTerm(_ searchTerm: String) {
-        if let searchViewController = viewController?.navigationController?.viewControllers.first(where: { $0 is SearchViewController }) as? SearchViewController {
-            searchViewController.searchBar.text = searchTerm
-            searchViewController.presenter?.searchAlbums(with: searchTerm)
-            viewController?.navigationController?.popToViewController(searchViewController, animated: true)
+    func navigateBackToSearchWithTerm(with term: String, from navigationController: UINavigationController?) {
+        guard let searchViewController = SearchRouter.createModule() as? UINavigationController,
+              let rootViewController = searchViewController.viewControllers.first as? SearchViewController else {
+            return
         }
+
+        rootViewController.searchBar.isHidden = true
+        rootViewController.presenter?.searchAlbums(with: term)
+
+        navigationController?.pushViewController(rootViewController, animated: true)
     }
 }

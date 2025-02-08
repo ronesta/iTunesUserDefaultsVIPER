@@ -38,7 +38,7 @@ final class SearchViewController: UIViewController {
 
     var presenter: SearchPresenterProtocol?
     var storageManager: StorageManagerProtocol?
-    var albums = [Album]()
+    var collectionViewDataSource: SearchDataSourceProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ final class SearchViewController: UIViewController {
         navigationItem.titleView = searchBar
 
         searchBar.delegate = self
-        collectionView.dataSource = self
+        collectionView.dataSource = collectionViewDataSource
         collectionView.delegate = self
 
         collectionView.snp.makeConstraints { make in
@@ -66,7 +66,7 @@ final class SearchViewController: UIViewController {
 // MARK: - SearchViewProtocol
 extension SearchViewController: SearchViewProtocol {
     func updateAlbums(_ albums: [Album]) {
-        self.albums = albums
+        collectionViewDataSource?.albums = albums
         collectionView.reloadData()
     }
 
@@ -77,45 +77,14 @@ extension SearchViewController: SearchViewProtocol {
     }
 }
 
-// MARK: - UICollectionViewDataSource
-extension SearchViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        albums.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AlbumCollectionViewCell.id,
-            for: indexPath)
-                as? AlbumCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-
-        let album = albums[indexPath.item]
-
-        presenter?.loadImage(for: album) { image in
-            DispatchQueue.main.async {
-                guard let currentCell = collectionView.cellForItem(at: indexPath) as? AlbumCollectionViewCell else {
-                    return
-                }
-
-                currentCell.configure(with: album, image: image)
-            }
-        }
-
-        return cell
-    }
-}
-
 // MARK: - UICollectionViewDelegate
 extension SearchViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let album = albums[indexPath.item]
-        let searchViewController = SearchRouter()
+        guard let album = collectionViewDataSource?.albums[indexPath.item] else {
+            return
+        }
 
-        presenter?.didSelectAlbum(albums[indexPath.row])
-        searchViewController.navigateToAlbumDetails(with: album)
+        presenter?.didSelectAlbum(album)
     }
 }
 

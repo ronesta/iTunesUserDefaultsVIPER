@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-protocol AlbumRouterProtocol: AnyObject {
-    static func createModule(with album: Album) -> UIViewController
-}
-
 final class AlbumRouter: AlbumRouterProtocol {
     static func createModule(with album: Album) -> UIViewController {
         let storageManager = StorageManager()

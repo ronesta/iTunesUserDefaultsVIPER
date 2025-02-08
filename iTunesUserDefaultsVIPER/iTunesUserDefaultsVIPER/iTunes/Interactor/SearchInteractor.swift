@@ -8,11 +8,6 @@
 import Foundation
 import UIKit
 
-protocol SearchInteractorProtocol: AnyObject {
-    func searchAlbums(with term: String)
-    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void)
-}
-
 final class SearchInteractor: SearchInteractorProtocol {
     var presenter: SearchPresenterProtocol!
     var networkManager: NetworkManagerProtocol!

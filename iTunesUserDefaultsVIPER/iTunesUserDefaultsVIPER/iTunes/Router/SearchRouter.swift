@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-protocol SearchRouterProtocol: AnyObject {
-    func navigateToAlbumDetails(with album: Album)
-}
-
 final class SearchRouter: SearchRouterProtocol {
     weak var viewController: UIViewController?
 
@@ -26,15 +22,24 @@ final class SearchRouter: SearchRouterProtocol {
                                         interactor: interactor,
                                         router: router
         )
+        let collectionViewDataSource = SearchCollectionViewDataSource(presenter: presenter)
 
         view.presenter = presenter
         view.storageManager = storageManager
+        view.collectionViewDataSource = collectionViewDataSource
         interactor.presenter = presenter
         interactor.networkManager = networkManager
         interactor.storageManager = storageManager
         router.viewController = view
 
-        return view
+        let navigationController = UINavigationController(rootViewController: view)
+        let tabBarItem = UITabBarItem(title: "Search",
+                                      image: UIImage(systemName: "magnifyingglass"),
+                                      tag: 0)
+        tabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 16)], for: .normal)
+        navigationController.tabBarItem = tabBarItem
+
+        return navigationController
     }
 
     func navigateToAlbumDetails(with album: Album) {
