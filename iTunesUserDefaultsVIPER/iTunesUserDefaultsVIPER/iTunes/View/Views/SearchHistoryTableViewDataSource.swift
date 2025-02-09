@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-protocol SearchHistoryDataSourceProtocol: AnyObject, UITableViewDataSource {
-    var searchHistory: [String] { get set }
-}
-
 final class SearchHistoryTableViewDataSource: NSObject, SearchHistoryDataSourceProtocol {
     var searchHistory = [String]()
 

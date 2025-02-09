@@ -8,10 +8,6 @@
 import Foundation
 import UIKit
 
-protocol SearchDataSourceProtocol: AnyObject, UICollectionViewDataSource {
-    var albums: [Album] { get set }
-}
-
 final class SearchCollectionViewDataSource: NSObject, SearchDataSourceProtocol {
     var albums = [Album]()
     var presenter: SearchPresenterProtocol
