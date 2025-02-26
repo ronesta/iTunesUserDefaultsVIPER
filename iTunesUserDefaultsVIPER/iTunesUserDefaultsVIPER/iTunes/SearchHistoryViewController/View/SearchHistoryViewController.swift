@@ -62,6 +62,6 @@ extension SearchHistoryViewController: UITableViewDelegate {
             return
         }
 
-        presenter?.didSelectAlbum(with: selectedTerm, from: self.navigationController)
+        presenter?.didSelectAlbum(with: selectedTerm)
     }
 }

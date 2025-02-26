@@ -30,7 +30,7 @@ final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
         view?.updateSearchHistory(history)
     }
 
-    func didSelectAlbum(with term: String, from navigationController: UINavigationController?) {
-        router.navigateBackToSearchWithTerm(with: term, from: navigationController)
+    func didSelectAlbum(with term: String) {
+        router.navigateBackToSearchWithTerm(with: term)
     }
 }

@@ -41,7 +41,7 @@ final class SearchHistoryRouter: SearchHistoryRouterProtocol {
         return navigationController
     }
 
-    func navigateBackToSearchWithTerm(with term: String, from navigationController: UINavigationController?) {
+    func navigateBackToSearchWithTerm(with term: String) {
         let searchRouter = SearchRouter()
 
         guard let searchViewController = searchRouter.createModule() as? UINavigationController,
@@ -52,6 +52,6 @@ final class SearchHistoryRouter: SearchHistoryRouterProtocol {
         rootViewController.searchBar.isHidden = true
         rootViewController.presenter?.viewDidLoad(with: term)
 
-        navigationController?.pushViewController(rootViewController, animated: true)
+        viewController?.navigationController?.pushViewController(rootViewController, animated: true)
     }
 }
