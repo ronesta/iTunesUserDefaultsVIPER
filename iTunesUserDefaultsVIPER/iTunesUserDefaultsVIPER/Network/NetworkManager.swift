@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 final class NetworkManager: NetworkManagerProtocol {
-    var dataCounter = 1
-    var imageCounter = 1
+    private var dataCounter = 1
+    private var imageCounter = 1
 
     private var storageManager: StorageManagerProtocol?
 

@@ -9,21 +9,23 @@ import Foundation
 import UIKit
 
 final class SearchInteractor: SearchInteractorProtocol {
-    var presenter: SearchPresenterProtocol!
-    var networkManager: NetworkManagerProtocol!
-    var storageManager: StorageManagerProtocol!
+    var presenter: SearchPresenterProtocol?
+    var networkManager: NetworkManagerProtocol?
+    var storageManager: StorageManagerProtocol?
 
     func searchAlbums(with term: String) {
-        if let savedAlbums = storageManager.loadAlbums(for: term) {
+        storageManager?.saveSearchTerm(term)
+
+        if let savedAlbums = storageManager?.loadAlbums(for: term) {
             self.presenter?.didFetchAlbums(savedAlbums)
             return
         }
 
-        networkManager.loadAlbums(albumName: term) { [weak self] result in
+        networkManager?.loadAlbums(albumName: term) { [weak self] result in
             switch result {
             case .success(let albums):
                 self?.presenter?.didFetchAlbums(albums)
-                self?.storageManager.saveAlbums(albums, for: term)
+                self?.storageManager?.saveAlbums(albums, for: term)
                     print("Successfully loaded \(albums.count) albums.")
             case .failure(let error):
                 self?.presenter?.didFailToFetchAlbums(error.localizedDescription)
@@ -32,6 +34,6 @@ final class SearchInteractor: SearchInteractorProtocol {
     }
 
     func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
-        networkManager.loadImage(from: album.artworkUrl100, completion: completion)
+        networkManager?.loadImage(from: album.artworkUrl100, completion: completion)
     }
 }

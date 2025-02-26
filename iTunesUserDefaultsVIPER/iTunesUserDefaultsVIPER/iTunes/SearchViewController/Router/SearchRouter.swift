@@ -11,7 +11,7 @@ import UIKit
 final class SearchRouter: SearchRouterProtocol {
     weak var viewController: UIViewController?
 
-    static func createModule() -> UIViewController {
+    func createModule() -> UIViewController {
         let storageManager = StorageManager()
         let networkManager = NetworkManager(storageManager: storageManager)
 
@@ -25,11 +25,12 @@ final class SearchRouter: SearchRouterProtocol {
         let collectionViewDataSource = SearchCollectionViewDataSource(presenter: presenter)
 
         view.presenter = presenter
-        view.storageManager = storageManager
         view.collectionViewDataSource = collectionViewDataSource
+
         interactor.presenter = presenter
         interactor.networkManager = networkManager
         interactor.storageManager = storageManager
+
         router.viewController = view
 
         let navigationController = UINavigationController(rootViewController: view)
@@ -43,19 +44,9 @@ final class SearchRouter: SearchRouterProtocol {
     }
 
     func navigateToAlbumDetails(with album: Album) {
-        let albumVC = AlbumRouter.createModule(with: album)
-        viewController?.navigationController?.pushViewController(albumVC, animated: true)
-    }
+        let albumRouter = AlbumRouter()
 
-    func performSearch(for term: String) {
-        let searchViewController = SearchRouter.createModule()
-        guard let rootViewController = searchViewController as? SearchViewController else {
-            return
-        }
-
-        rootViewController.searchBar.isHidden = true
-        rootViewController.presenter?.searchAlbums(with: term)
-
-        viewController?.navigationController?.pushViewController(rootViewController, animated: true)
+        let albumViewController = albumRouter.createModule(with: album)
+        viewController?.navigationController?.pushViewController(albumViewController, animated: true)
     }
 }

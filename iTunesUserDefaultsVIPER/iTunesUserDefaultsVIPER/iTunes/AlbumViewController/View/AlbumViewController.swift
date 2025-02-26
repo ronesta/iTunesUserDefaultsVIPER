@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 final class AlbumViewController: UIViewController {
-    var presenter: AlbumPresenterProtocol!
+    var presenter: AlbumPresenterProtocol?
 
     private let albumImageView: UIImageView = {
         let image = UIImageView()
@@ -45,7 +45,7 @@ final class AlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        presenter.loadAlbumDetails()
+        presenter?.viewDidLoad()
     }
 
     private func setupViews() {

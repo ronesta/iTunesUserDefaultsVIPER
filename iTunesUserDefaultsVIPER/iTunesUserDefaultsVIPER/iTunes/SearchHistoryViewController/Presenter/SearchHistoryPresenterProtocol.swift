@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
 protocol SearchHistoryPresenterProtocol: AnyObject {
-    func loadSearchHistory()
+    func viewDidLoad()
     func didFetchSearchHistory(_ history: [String])
+    func didSelectAlbum(with term: String, from navigationController: UINavigationController?)
 }

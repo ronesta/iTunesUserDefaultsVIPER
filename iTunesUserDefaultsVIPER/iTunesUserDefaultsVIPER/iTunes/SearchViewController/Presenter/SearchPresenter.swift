@@ -10,17 +10,24 @@ import UIKit
 
 final class SearchPresenter: SearchPresenterProtocol {
     weak var view: SearchViewProtocol?
-    private let interactor: SearchInteractorProtocol?
-    private let router: SearchRouterProtocol?
+    private let interactor: SearchInteractorProtocol
+    private let router: SearchRouterProtocol
 
-    init(view: SearchViewProtocol?, interactor: SearchInteractorProtocol?, router: SearchRouterProtocol?) {
+    init(view: SearchViewProtocol?,
+         interactor: SearchInteractorProtocol,
+         router: SearchRouterProtocol
+    ) {
         self.view = view
         self.interactor = interactor
         self.router = router
     }
 
+    func viewDidLoad(with term: String) {
+        searchAlbums(with: term)
+    }
+
     func searchAlbums(with searchTerm: String) {
-        interactor?.searchAlbums(with: searchTerm)
+        interactor.searchAlbums(with: searchTerm)
     }
 
     func didFetchAlbums(_ albums: [Album]) {
@@ -32,10 +39,10 @@ final class SearchPresenter: SearchPresenterProtocol {
     }
 
     func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
-        interactor?.loadImage(for: album, completion: completion)
+        interactor.loadImage(for: album, completion: completion)
     }
 
     func didSelectAlbum(_ album: Album) {
-        router?.navigateToAlbumDetails(with: album)
+        router.navigateToAlbumDetails(with: album)
     }
 }

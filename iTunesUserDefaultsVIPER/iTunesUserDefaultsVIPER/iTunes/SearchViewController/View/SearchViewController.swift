@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 final class SearchViewController: UIViewController {
+    var presenter: SearchPresenterProtocol?
+    var collectionViewDataSource: SearchDataSourceProtocol?
+
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
@@ -35,10 +38,6 @@ final class SearchViewController: UIViewController {
 
         return collectionView
     }()
-
-    var presenter: SearchPresenterProtocol?
-    var storageManager: StorageManagerProtocol?
-    var collectionViewDataSource: SearchDataSourceProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,7 +95,6 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
 
-        storageManager?.saveSearchTerm(searchTerm)
-        presenter?.searchAlbums(with: searchTerm)
+        presenter?.viewDidLoad(with: searchTerm)
     }
 }

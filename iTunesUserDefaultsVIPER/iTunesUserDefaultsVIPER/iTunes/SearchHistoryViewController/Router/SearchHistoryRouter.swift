@@ -11,7 +11,7 @@ import UIKit
 final class SearchHistoryRouter: SearchHistoryRouterProtocol {
     weak var viewController: UIViewController?
 
-    static func createModule() -> UIViewController {
+    func createModule() -> UIViewController {
         let storageManager = StorageManager()
 
         let view = SearchHistoryViewController()
@@ -25,8 +25,10 @@ final class SearchHistoryRouter: SearchHistoryRouterProtocol {
 
         view.presenter = presenter
         view.tableViewDataSource = tableViewDataSource
+
         interactor.presenter = presenter
         interactor.storageManager = storageManager
+
         router.viewController = view
 
         let navigationController = UINavigationController(rootViewController: view)
@@ -40,13 +42,15 @@ final class SearchHistoryRouter: SearchHistoryRouterProtocol {
     }
 
     func navigateBackToSearchWithTerm(with term: String, from navigationController: UINavigationController?) {
-        guard let searchViewController = SearchRouter.createModule() as? UINavigationController,
+        let searchRouter = SearchRouter()
+
+        guard let searchViewController = searchRouter.createModule() as? UINavigationController,
               let rootViewController = searchViewController.viewControllers.first as? SearchViewController else {
             return
         }
 
         rootViewController.searchBar.isHidden = true
-        rootViewController.presenter?.searchAlbums(with: term)
+        rootViewController.presenter?.viewDidLoad(with: term)
 
         navigationController?.pushViewController(rootViewController, animated: true)
     }

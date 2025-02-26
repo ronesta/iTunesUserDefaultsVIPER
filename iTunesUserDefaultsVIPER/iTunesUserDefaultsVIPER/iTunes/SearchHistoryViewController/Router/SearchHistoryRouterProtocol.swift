@@ -9,5 +9,6 @@ import Foundation
 import UIKit
 
 protocol SearchHistoryRouterProtocol: AnyObject {
+    func createModule() -> UIViewController
     func navigateBackToSearchWithTerm(with term: String, from navigationController: UINavigationController?)
 }

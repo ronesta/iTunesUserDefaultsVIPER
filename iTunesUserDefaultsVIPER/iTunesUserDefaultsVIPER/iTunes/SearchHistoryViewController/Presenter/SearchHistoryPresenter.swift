@@ -6,26 +6,31 @@
 //
 
 import Foundation
+import UIKit
 
 final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
     weak var view: SearchHistoryViewProtocol?
-    private let interactor: SearchHistoryInteractorProtocol?
-    private let router: SearchHistoryRouterProtocol?
+    private let interactor: SearchHistoryInteractorProtocol
+    private let router: SearchHistoryRouterProtocol
 
     init(view: SearchHistoryViewProtocol?,
-         interactor: SearchHistoryInteractorProtocol?,
-         router: SearchHistoryRouterProtocol?
+         interactor: SearchHistoryInteractorProtocol,
+         router: SearchHistoryRouterProtocol
     ) {
         self.view = view
         self.interactor = interactor
         self.router = router
     }
 
-    func loadSearchHistory() {
-        interactor?.loadSearchHistory()
+    func viewDidLoad() {
+        interactor.loadSearchHistory()
     }
 
     func didFetchSearchHistory(_ history: [String]) {
         view?.updateSearchHistory(history)
+    }
+
+    func didSelectAlbum(with term: String, from navigationController: UINavigationController?) {
+        router.navigateBackToSearchWithTerm(with: term, from: navigationController)
     }
 }

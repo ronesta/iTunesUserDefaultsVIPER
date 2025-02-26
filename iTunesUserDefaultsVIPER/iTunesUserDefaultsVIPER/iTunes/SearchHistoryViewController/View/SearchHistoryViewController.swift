@@ -8,14 +8,14 @@
 import UIKit
 
 final class SearchHistoryViewController: UIViewController {
+    var presenter: SearchHistoryPresenterProtocol?
+    var tableViewDataSource: SearchHistoryDataSourceProtocol?
+
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.separatorStyle = .singleLine
         return tableView
     }()
-
-    var presenter: SearchHistoryPresenterProtocol?
-    var tableViewDataSource: SearchHistoryDataSourceProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,7 @@ final class SearchHistoryViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        presenter?.loadSearchHistory()
+        presenter?.viewDidLoad()
     }
 
     private func setupNavigationBar() {
@@ -62,11 +62,6 @@ extension SearchHistoryViewController: UITableViewDelegate {
             return
         }
 
-        performSearch(for: selectedTerm)
-    }
-
-    func performSearch(for term: String) {
-        let searchHistoryViewController = SearchHistoryRouter()
-        searchHistoryViewController.navigateBackToSearchWithTerm(with: term, from: self.navigationController)
+        presenter?.didSelectAlbum(with: selectedTerm, from: self.navigationController)
     }
 }
