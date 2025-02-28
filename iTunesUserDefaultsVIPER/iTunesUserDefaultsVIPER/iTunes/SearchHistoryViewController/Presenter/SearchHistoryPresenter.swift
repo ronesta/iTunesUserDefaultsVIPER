@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
     weak var view: SearchHistoryViewProtocol?

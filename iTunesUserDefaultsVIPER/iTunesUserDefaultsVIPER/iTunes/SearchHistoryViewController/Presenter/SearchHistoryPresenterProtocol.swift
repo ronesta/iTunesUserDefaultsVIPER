@@ -6,10 +6,11 @@
 //
 
 import Foundation
-import UIKit
 
 protocol SearchHistoryPresenterProtocol: AnyObject {
     func viewDidLoad()
+
     func didFetchSearchHistory(_ history: [String])
+
     func didSelectAlbum(with term: String)
 }

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 final class AlbumInteractor: AlbumInteractorProtocol {
     var presenter: AlbumPresenterProtocol?

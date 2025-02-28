@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIImage
 
 final class SearchInteractor: SearchInteractorProtocol {
     var presenter: SearchPresenterProtocol?

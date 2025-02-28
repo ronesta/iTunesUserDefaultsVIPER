@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIImage
 
 final class AlbumPresenter: AlbumPresenterProtocol {
     weak var view: AlbumViewProtocol?

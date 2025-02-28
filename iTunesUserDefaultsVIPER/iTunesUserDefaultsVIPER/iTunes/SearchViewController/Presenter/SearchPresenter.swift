@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIImage
 
 final class SearchPresenter: SearchPresenterProtocol {
     weak var view: SearchViewProtocol?

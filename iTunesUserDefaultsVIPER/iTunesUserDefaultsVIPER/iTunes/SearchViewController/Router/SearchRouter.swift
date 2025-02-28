@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIViewController
 
 final class SearchRouter: SearchRouterProtocol {
     weak var viewController: UIViewController?

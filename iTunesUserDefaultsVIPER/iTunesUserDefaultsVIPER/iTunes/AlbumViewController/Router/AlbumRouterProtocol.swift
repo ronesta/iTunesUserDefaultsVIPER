@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIViewController
 
 protocol AlbumRouterProtocol: AnyObject {
     func createModule(with album: Album) -> UIViewController

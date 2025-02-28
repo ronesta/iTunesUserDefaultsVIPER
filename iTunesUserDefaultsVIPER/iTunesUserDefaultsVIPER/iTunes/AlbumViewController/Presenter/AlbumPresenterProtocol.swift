@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import UIKit
+import UIKit.UIImage
 
 protocol AlbumPresenterProtocol: AnyObject {
     func viewDidLoad()
