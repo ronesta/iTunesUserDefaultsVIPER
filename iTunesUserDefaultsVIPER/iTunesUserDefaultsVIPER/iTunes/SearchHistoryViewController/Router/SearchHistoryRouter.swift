@@ -14,22 +14,20 @@ final class SearchHistoryRouter: SearchHistoryRouterProtocol {
     func createModule() -> UIViewController {
         let storageManager = StorageManager()
 
-        let view = SearchHistoryViewController()
-        let interactor = SearchHistoryInteractor()
+        let interactor = SearchHistoryInteractor(storageManager: storageManager)
         let router = SearchHistoryRouter()
-        let presenter = SearchHistoryPresenter(view: view,
-                                               interactor: interactor,
+        let presenter = SearchHistoryPresenter(interactor: interactor,
                                                router: router
         )
         let tableViewDataSource = SearchHistoryTableViewDataSource()
 
-        view.presenter = presenter
-        view.tableViewDataSource = tableViewDataSource
-
-        interactor.presenter = presenter
-        interactor.storageManager = storageManager
+        let view = SearchHistoryViewController(presenter: presenter,
+                                               tableViewDataSource: tableViewDataSource
+        )
 
         router.viewController = view
+        presenter.view = view
+        interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: view)
         let tabBarItem = UITabBarItem(title: "History",
@@ -49,8 +47,7 @@ final class SearchHistoryRouter: SearchHistoryRouterProtocol {
             return
         }
 
-        rootViewController.searchBar.isHidden = true
-        rootViewController.presenter?.viewDidLoad(with: term)
+        rootViewController.performSearch(with: term)
 
         viewController?.navigationController?.pushViewController(rootViewController, animated: true)
     }

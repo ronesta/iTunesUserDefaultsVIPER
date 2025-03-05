@@ -8,13 +8,16 @@
 import Foundation
 
 final class SearchHistoryInteractor: SearchHistoryInteractorProtocol {
-    var presenter: SearchHistoryPresenterProtocol?
-    var storageManager: StorageManagerProtocol?
+    weak var presenter: SearchHistoryPresenterOutputProtocol?
+
+    private let storageManager: StorageManagerProtocol
+
+    init(storageManager: StorageManagerProtocol) {
+        self.storageManager = storageManager
+    }
 
     func loadSearchHistory() {
-        guard let history = storageManager?.getSearchHistory() else {
-            return
-        }
+        let history = storageManager.getSearchHistory()
 
         presenter?.didFetchSearchHistory(history)
     }

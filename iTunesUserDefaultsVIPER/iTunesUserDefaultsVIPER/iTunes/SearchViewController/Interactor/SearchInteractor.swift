@@ -6,34 +6,39 @@
 //
 
 import Foundation
-import UIKit.UIImage
 
 final class SearchInteractor: SearchInteractorProtocol {
-    var presenter: SearchPresenterProtocol?
-    var networkManager: NetworkManagerProtocol?
-    var storageManager: StorageManagerProtocol?
+    weak var presenter: SearchPresenterOutputProtocol?
+
+    private let networkManager: NetworkManagerProtocol
+    private let storageManager: StorageManagerProtocol
+
+    init(networkManager: NetworkManagerProtocol,
+         storageManager: StorageManagerProtocol
+    ) {
+        self.networkManager = networkManager
+        self.storageManager = storageManager
+    }
+
+    func saveSearchTerm(_ term: String) {
+        storageManager.saveSearchTerm(term)
+    }
 
     func searchAlbums(with term: String) {
-        storageManager?.saveSearchTerm(term)
-
-        if let savedAlbums = storageManager?.loadAlbums(for: term) {
+        if let savedAlbums = storageManager.loadAlbums(for: term) {
             self.presenter?.didFetchAlbums(savedAlbums)
             return
         }
 
-        networkManager?.loadAlbums(albumName: term) { [weak self] result in
+        networkManager.loadAlbums(albumName: term) { [weak self] result in
             switch result {
             case .success(let albums):
                 self?.presenter?.didFetchAlbums(albums)
-                self?.storageManager?.saveAlbums(albums, for: term)
+                self?.storageManager.saveAlbums(albums, for: term)
                     print("Successfully loaded \(albums.count) albums.")
             case .failure(let error):
                 self?.presenter?.didFailToFetchAlbums(error.localizedDescription)
             }
         }
-    }
-
-    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
-        networkManager?.loadImage(from: album.artworkUrl100, completion: completion)
     }
 }

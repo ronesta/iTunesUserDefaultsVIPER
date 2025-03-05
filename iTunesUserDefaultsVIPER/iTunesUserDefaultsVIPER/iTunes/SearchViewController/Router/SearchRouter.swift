@@ -13,25 +13,25 @@ final class SearchRouter: SearchRouterProtocol {
 
     func createModule() -> UIViewController {
         let storageManager = StorageManager()
-        let networkManager = NetworkManager(storageManager: storageManager)
+        let networkManager = NetworkManager()
+        let imageLoader = ImageLoader(storageManager: storageManager)
 
-        let view = SearchViewController()
-        let interactor = SearchInteractor()
+        let interactor = SearchInteractor(networkManager: networkManager,
+                                          storageManager: storageManager
+        )
         let router = SearchRouter()
-        let presenter = SearchPresenter(view: view,
-                                        interactor: interactor,
+        let presenter = SearchPresenter(interactor: interactor,
                                         router: router
         )
-        let collectionViewDataSource = SearchCollectionViewDataSource(presenter: presenter)
+        let collectionViewDataSource = SearchCollectionViewDataSource(imageLoader: imageLoader)
 
-        view.presenter = presenter
-        view.collectionViewDataSource = collectionViewDataSource
-
-        interactor.presenter = presenter
-        interactor.networkManager = networkManager
-        interactor.storageManager = storageManager
+        let view = SearchViewController(presenter: presenter,
+                                        collectionViewDataSource: collectionViewDataSource
+        )
 
         router.viewController = view
+        presenter.view = view
+        interactor.presenter = presenter
 
         let navigationController = UINavigationController(rootViewController: view)
         let tabBarItem = UITabBarItem(title: "Search",

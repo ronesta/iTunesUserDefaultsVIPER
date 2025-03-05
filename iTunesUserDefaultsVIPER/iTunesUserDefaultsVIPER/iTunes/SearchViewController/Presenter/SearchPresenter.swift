@@ -8,26 +8,39 @@
 import Foundation
 import UIKit.UIImage
 
-final class SearchPresenter: SearchPresenterProtocol {
+final class SearchPresenter: SearchPresenterInputProtocol,
+                             SearchPresenterOutputProtocol {
     weak var view: SearchViewProtocol?
+
     private let interactor: SearchInteractorProtocol
     private let router: SearchRouterProtocol
 
-    init(view: SearchViewProtocol?,
-         interactor: SearchInteractorProtocol,
+    init(interactor: SearchInteractorProtocol,
          router: SearchRouterProtocol
     ) {
-        self.view = view
         self.interactor = interactor
         self.router = router
     }
 
-    func viewDidLoad(with term: String) {
-        searchAlbums(with: term)
+    func didTypeSearch(_ searchQuery: String) {
+        guard !searchQuery.isEmpty else {
+            return
+        }
+
+        interactor.searchAlbums(with: searchQuery)
     }
 
-    func searchAlbums(with searchTerm: String) {
-        interactor.searchAlbums(with: searchTerm)
+    func searchButtonClicked(with term: String?) {
+        guard let term, !term.isEmpty else {
+            return
+        }
+
+        interactor.saveSearchTerm(term)
+        interactor.searchAlbums(with: term)
+    }
+
+    func searchFromHistory(with term: String) {
+        interactor.searchAlbums(with: term)
     }
 
     func didFetchAlbums(_ albums: [Album]) {
@@ -36,10 +49,6 @@ final class SearchPresenter: SearchPresenterProtocol {
 
     func didFailToFetchAlbums(_ error: String) {
         view?.showError(error)
-    }
-
-    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void) {
-        interactor.loadImage(for: album, completion: completion)
     }
 
     func didSelectAlbum(_ album: Album) {

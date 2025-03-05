@@ -8,11 +8,16 @@
 import Foundation
 
 final class AlbumInteractor: AlbumInteractorProtocol {
-    var presenter: AlbumPresenterProtocol?
-    var networkManager: NetworkManagerProtocol?
+    weak var presenter: AlbumPresenterOutputProtocol?
+
+    private let imageLoader: ImageLoaderProtocol
+
+    init(imageLoader: ImageLoaderProtocol) {
+        self.imageLoader = imageLoader
+    }
 
     func loadAlbumDetails(for album: Album) {
-        networkManager?.loadImage(from: album.artworkUrl100) { [weak self] loadedImage in
+        imageLoader.loadImage(from: album.artworkUrl100) { [weak self] loadedImage in
 
             guard let loadedImage else {
                 return

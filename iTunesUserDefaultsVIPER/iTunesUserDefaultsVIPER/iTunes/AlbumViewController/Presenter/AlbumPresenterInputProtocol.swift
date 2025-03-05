@@ -6,9 +6,7 @@
 //
 
 import Foundation
-import UIKit.UIImage
 
-protocol AlbumPresenterProtocol: AnyObject {
+protocol AlbumPresenterInputProtocol: AnyObject {
     func viewDidLoad()
-    func didFetchAlbumDetails(album: Album, image: UIImage)
 }

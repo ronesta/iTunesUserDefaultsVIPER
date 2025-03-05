@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import UIKit.UIImage
 
 protocol SearchInteractorProtocol: AnyObject {
-    func searchAlbums(with term: String)
+    func saveSearchTerm(_ term: String)
 
-    func loadImage(for album: Album, completion: @escaping (UIImage?) -> Void)
+    func searchAlbums(with term: String)
 }

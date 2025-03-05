@@ -7,16 +7,16 @@
 
 import Foundation
 
-final class SearchHistoryPresenter: SearchHistoryPresenterProtocol {
+final class SearchHistoryPresenter: SearchHistoryPresenterInputProtocol,
+                                    SearchHistoryPresenterOutputProtocol {
     weak var view: SearchHistoryViewProtocol?
+
     private let interactor: SearchHistoryInteractorProtocol
     private let router: SearchHistoryRouterProtocol
 
-    init(view: SearchHistoryViewProtocol?,
-         interactor: SearchHistoryInteractorProtocol,
+    init(interactor: SearchHistoryInteractorProtocol,
          router: SearchHistoryRouterProtocol
     ) {
-        self.view = view
         self.interactor = interactor
         self.router = router
     }

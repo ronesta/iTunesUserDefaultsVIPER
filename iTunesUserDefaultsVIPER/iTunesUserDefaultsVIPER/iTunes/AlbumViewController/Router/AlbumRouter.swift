@@ -11,21 +11,17 @@ import UIKit.UIViewController
 final class AlbumRouter: AlbumRouterProtocol {
     func createModule(with album: Album) -> UIViewController {
         let storageManager = StorageManager()
-        let networkManager = NetworkManager(storageManager: storageManager)
+        let imageLoader = ImageLoader(storageManager: storageManager)
 
-        let view = AlbumViewController()
-        let interactor = AlbumInteractor()
-        let router = AlbumRouter()
-        let presenter = AlbumPresenter(view: view,
-                                       interactor: interactor,
-                                       router: router,
+        let interactor = AlbumInteractor(imageLoader: imageLoader)
+        let presenter = AlbumPresenter(interactor: interactor,
                                        album: album
         )
 
-        view.presenter = presenter
+        let view = AlbumViewController(presenter: presenter)
 
+        presenter.view = view
         interactor.presenter = presenter
-        interactor.networkManager = networkManager
 
         return view
     }
