@@ -7,8 +7,7 @@
 
 import Foundation
 
-final class SearchHistoryPresenter: SearchHistoryPresenterInputProtocol,
-                                    SearchHistoryPresenterOutputProtocol {
+final class SearchHistoryPresenter {
     weak var view: SearchHistoryViewProtocol?
 
     private let interactor: SearchHistoryInteractorProtocol
@@ -20,16 +19,22 @@ final class SearchHistoryPresenter: SearchHistoryPresenterInputProtocol,
         self.interactor = interactor
         self.router = router
     }
+}
 
+// MARK: - SearchHistoryPresenterInputProtocol
+extension SearchHistoryPresenter: SearchHistoryPresenterInputProtocol {
     func viewDidLoad() {
         interactor.loadSearchHistory()
     }
 
+    func didSelectAlbum(with term: String) {
+        router.performSearch(with: term)
+    }
+}
+
+// MARK: - SearchHistoryPresenterOutputProtocol
+extension SearchHistoryPresenter: SearchHistoryPresenterOutputProtocol {
     func didFetchSearchHistory(_ history: [String]) {
         view?.updateSearchHistory(history)
-    }
-
-    func didSelectAlbum(with term: String) {
-        router.navigateBackToSearchWithTerm(with: term)
     }
 }

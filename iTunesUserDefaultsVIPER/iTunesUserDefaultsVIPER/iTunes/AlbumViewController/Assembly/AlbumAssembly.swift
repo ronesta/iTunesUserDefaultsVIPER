@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import UIKit.UIViewController
+import UIKit
 
-final class AlbumRouter: AlbumRouterProtocol {
+final class AlbumAssembly {
     func createModule(with album: Album) -> UIViewController {
         let storageManager = StorageManager()
         let imageLoader = ImageLoader(storageManager: storageManager)
