@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class ITunesManager: ITunesManagerProtocol {
+final class ITunesService: ITunesServiceProtocol {
     private var counter = 1
 
     func loadAlbums(albumName: String, completion: @escaping (Result<[Album], Error>) -> Void) {

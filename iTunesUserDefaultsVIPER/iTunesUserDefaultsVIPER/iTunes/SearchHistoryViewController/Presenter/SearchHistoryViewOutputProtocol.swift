@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SearchHistoryPresenterInputProtocol: AnyObject {
+protocol SearchHistoryViewOutputProtocol: AnyObject {
     func viewDidLoad()
 
     func didSelectAlbum(with term: String)

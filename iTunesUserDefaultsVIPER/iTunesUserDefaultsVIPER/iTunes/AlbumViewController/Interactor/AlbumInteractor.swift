@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class AlbumInteractor: AlbumInteractorProtocol {
-    weak var presenter: AlbumPresenterOutputProtocol?
+final class AlbumInteractor: AlbumInteractorInputProtocol {
+    weak var presenter: AlbumInteractorOutputProtocol?
 
     private let imageLoader: ImageLoaderProtocol
 

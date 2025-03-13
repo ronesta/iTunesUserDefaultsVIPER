@@ -1,12 +1,14 @@
 //
-//  SearchViewInputProtocol.swift
+//  SearchViewProtocol.swift
 //  iTunesUserDefaultsVIPER
 //
-//  Created by Ибрагим Габибли on 05.03.2025.
+//  Created by Ибрагим Габибли on 05.02.2025.
 //
 
 import Foundation
 
-protocol SearchViewInputProtocol {
-    func performSearch(with term: String)
+protocol SearchViewInputProtocol: AnyObject {
+    func updateAlbums(_ albums: [Album])
+
+    func showError(_ message: String)
 }

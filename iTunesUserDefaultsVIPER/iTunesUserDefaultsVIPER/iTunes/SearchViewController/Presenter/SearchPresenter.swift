@@ -9,12 +9,12 @@ import Foundation
 import UIKit.UIImage
 
 final class SearchPresenter {
-    weak var view: SearchViewProtocol?
+    weak var view: SearchViewInputProtocol?
 
-    private let interactor: SearchInteractorProtocol
+    private let interactor: SearchInteractorInputProtocol
     private let router: SearchRouterProtocol
 
-    init(interactor: SearchInteractorProtocol,
+    init(interactor: SearchInteractorInputProtocol,
          router: SearchRouterProtocol
     ) {
         self.interactor = interactor
@@ -22,8 +22,8 @@ final class SearchPresenter {
     }
 }
 
-// MARK: - SearchPresenterInputProtocol
-extension SearchPresenter: SearchPresenterInputProtocol {
+// MARK: - SearchViewOutputProtocol
+extension SearchPresenter: SearchViewOutputProtocol {
     func didTypeSearch(_ searchQuery: String) {
         guard !searchQuery.isEmpty else {
             return
@@ -50,8 +50,8 @@ extension SearchPresenter: SearchPresenterInputProtocol {
     }
 }
 
-// MARK: - SearchPresenterOutputProtocol
-extension SearchPresenter: SearchPresenterOutputProtocol {
+// MARK: - SearchInteractorOutputProtocol
+extension SearchPresenter: SearchInteractorOutputProtocol {
     func didFetchAlbums(_ albums: [Album]) {
         view?.updateAlbums(albums)
     }

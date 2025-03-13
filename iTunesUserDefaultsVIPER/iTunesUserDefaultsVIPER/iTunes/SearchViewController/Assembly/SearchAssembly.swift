@@ -11,10 +11,10 @@ import UIKit
 final class SearchAssembly {
     func createModule() -> UIViewController {
         let storageManager = StorageManager()
-        let iTunesManager = ITunesManager()
+        let iTunesService = ITunesService()
         let imageLoader = ImageLoader(storageManager: storageManager)
 
-        let interactor = SearchInteractor(iTunesManager: iTunesManager,
+        let interactor = SearchInteractor(iTunesService: iTunesService,
                                           storageManager: storageManager)
         let router = SearchRouter()
         let presenter = SearchPresenter(interactor: interactor,

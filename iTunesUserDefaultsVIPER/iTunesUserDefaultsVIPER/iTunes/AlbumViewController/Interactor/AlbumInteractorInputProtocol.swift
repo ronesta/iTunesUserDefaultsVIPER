@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol AlbumInteractorProtocol: AnyObject {
+protocol AlbumInteractorInputProtocol: AnyObject {
     func loadAlbumDetails(for album: Album)
 }

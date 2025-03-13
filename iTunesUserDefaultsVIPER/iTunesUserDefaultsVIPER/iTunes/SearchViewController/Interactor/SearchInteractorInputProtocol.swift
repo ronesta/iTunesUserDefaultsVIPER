@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SearchInteractorProtocol: AnyObject {
+protocol SearchInteractorInputProtocol: AnyObject {
     func saveSearchTerm(_ term: String)
 
     func searchAlbums(with term: String)

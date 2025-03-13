@@ -7,16 +7,16 @@
 
 import Foundation
 
-final class SearchInteractor: SearchInteractorProtocol {
-    weak var presenter: SearchPresenterOutputProtocol?
+final class SearchInteractor: SearchInteractorInputProtocol {
+    weak var presenter: SearchInteractorOutputProtocol?
 
-    private let iTunesManager: ITunesManagerProtocol
+    private let iTunesService: ITunesServiceProtocol
     private let storageManager: StorageManagerProtocol
 
-    init(iTunesManager: ITunesManagerProtocol,
+    init(iTunesService: ITunesServiceProtocol,
          storageManager: StorageManagerProtocol
     ) {
-        self.iTunesManager = iTunesManager
+        self.iTunesService = iTunesService
         self.storageManager = storageManager
     }
 
@@ -30,7 +30,7 @@ final class SearchInteractor: SearchInteractorProtocol {
             return
         }
 
-        iTunesManager.loadAlbums(albumName: term) { [weak self] result in
+        iTunesService.loadAlbums(albumName: term) { [weak self] result in
             switch result {
             case .success(let albums):
                 self?.presenter?.didFetchAlbums(albums)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SearchPresenterOutputProtocol: AnyObject {
+protocol SearchInteractorOutputProtocol: AnyObject {
     func didFetchAlbums(_ albums: [Album])
 
     func didFailToFetchAlbums(_ error: String)

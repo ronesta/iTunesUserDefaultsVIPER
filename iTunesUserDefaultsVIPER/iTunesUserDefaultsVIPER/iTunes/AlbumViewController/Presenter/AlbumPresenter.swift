@@ -9,12 +9,12 @@ import Foundation
 import UIKit.UIImage
 
 final class AlbumPresenter {
-    weak var view: AlbumViewProtocol?
+    weak var view: AlbumViewInputProtocol?
 
-    private let interactor: AlbumInteractorProtocol
+    private let interactor: AlbumInteractorInputProtocol
     private let album: Album
 
-    init(interactor: AlbumInteractorProtocol,
+    init(interactor: AlbumInteractorInputProtocol,
          album: Album
     ) {
         self.interactor = interactor
@@ -22,15 +22,15 @@ final class AlbumPresenter {
     }
 }
 
-// MARK: - AlbumPresenterInputProtocol
-extension AlbumPresenter: AlbumPresenterInputProtocol {
+// MARK: - AlbumViewOutputProtocol
+extension AlbumPresenter: AlbumViewOutputProtocol {
     func viewDidLoad() {
         interactor.loadAlbumDetails(for: album)
     }
 }
 
-// MARK: - AlbumPresenterOutputProtocol
-extension AlbumPresenter: AlbumPresenterOutputProtocol {
+// MARK: - AlbumInteractorOutputProtocol
+extension AlbumPresenter: AlbumInteractorOutputProtocol {
     func didFetchAlbumDetails(album: Album, image: UIImage) {
         view?.displayAlbumDetails(album: album, image: image)
     }

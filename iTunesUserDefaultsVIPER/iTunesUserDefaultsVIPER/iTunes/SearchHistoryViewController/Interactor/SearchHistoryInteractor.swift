@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class SearchHistoryInteractor: SearchHistoryInteractorProtocol {
-    weak var presenter: SearchHistoryPresenterOutputProtocol?
+final class SearchHistoryInteractor: SearchHistoryInteractorInputProtocol {
+    weak var presenter: SearchHistoryInteractorOutputProtocol?
 
     private let storageManager: StorageManagerProtocol
 

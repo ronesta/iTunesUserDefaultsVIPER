@@ -7,6 +7,6 @@
 
 import UIKit
 
-protocol ITunesManagerProtocol: AnyObject {
+protocol ITunesServiceProtocol: AnyObject {
     func loadAlbums(albumName: String, completion: @escaping (Result<[Album], Error>) -> Void)
 }

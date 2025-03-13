@@ -8,12 +8,12 @@
 import Foundation
 
 final class SearchHistoryPresenter {
-    weak var view: SearchHistoryViewProtocol?
+    weak var view: SearchHistoryViewInputProtocol?
 
-    private let interactor: SearchHistoryInteractorProtocol
+    private let interactor: SearchHistoryInteractorInputProtocol
     private let router: SearchHistoryRouterProtocol
 
-    init(interactor: SearchHistoryInteractorProtocol,
+    init(interactor: SearchHistoryInteractorInputProtocol,
          router: SearchHistoryRouterProtocol
     ) {
         self.interactor = interactor
@@ -21,8 +21,8 @@ final class SearchHistoryPresenter {
     }
 }
 
-// MARK: - SearchHistoryPresenterInputProtocol
-extension SearchHistoryPresenter: SearchHistoryPresenterInputProtocol {
+// MARK: - SearchHistoryViewOutputProtocol
+extension SearchHistoryPresenter: SearchHistoryViewOutputProtocol {
     func viewDidLoad() {
         interactor.loadSearchHistory()
     }
@@ -32,8 +32,8 @@ extension SearchHistoryPresenter: SearchHistoryPresenterInputProtocol {
     }
 }
 
-// MARK: - SearchHistoryPresenterOutputProtocol
-extension SearchHistoryPresenter: SearchHistoryPresenterOutputProtocol {
+// MARK: - SearchHistoryInteractorOutputProtocol
+extension SearchHistoryPresenter: SearchHistoryInteractorOutputProtocol {
     func didFetchSearchHistory(_ history: [String]) {
         view?.updateSearchHistory(history)
     }

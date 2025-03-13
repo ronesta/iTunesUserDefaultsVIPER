@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol SearchHistoryPresenterOutputProtocol: AnyObject {
+protocol SearchHistoryInteractorOutputProtocol: AnyObject {
     func didFetchSearchHistory(_ history: [String])
 }

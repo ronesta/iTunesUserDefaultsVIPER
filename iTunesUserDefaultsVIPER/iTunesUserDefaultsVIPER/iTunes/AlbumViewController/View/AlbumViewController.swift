@@ -40,9 +40,9 @@ final class AlbumViewController: UIViewController {
         return label
     }()
 
-    private let presenter: AlbumPresenterInputProtocol
+    private let presenter: AlbumViewOutputProtocol
 
-    init(presenter: AlbumPresenterInputProtocol) {
+    init(presenter: AlbumViewOutputProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -89,8 +89,8 @@ final class AlbumViewController: UIViewController {
     }
 }
 
-// MARK: - SearchViewProtocol
-extension AlbumViewController: AlbumViewProtocol {
+// MARK: - AlbumViewInputProtocol
+extension AlbumViewController: AlbumViewInputProtocol {
     func displayAlbumDetails(album: Album, image: UIImage) {
         albumNameLabel.text = album.collectionName
         artistNameLabel.text = album.artistName

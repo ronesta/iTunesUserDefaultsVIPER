@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol SearchHistoryInteractorProtocol: AnyObject {
+protocol SearchHistoryInteractorInputProtocol: AnyObject {
     func loadSearchHistory()
 }
