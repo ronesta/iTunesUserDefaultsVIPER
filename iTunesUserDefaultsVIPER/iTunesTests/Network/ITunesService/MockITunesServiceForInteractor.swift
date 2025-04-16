@@ -9,8 +9,7 @@ import Foundation
 @testable import iTunesUserDefaultsVIPER
 
 final class MockITunesServiceForInteractor: ITunesServiceProtocol {
-    private(set) var shouldReturnError = false
-    private(set) var albumName: String?
+    var shouldReturnError = false
     var albums = [Album]()
 
     func loadAlbums(albumName: String, completion: @escaping (Result<[Album], Error>) -> Void) {
@@ -18,8 +17,8 @@ final class MockITunesServiceForInteractor: ITunesServiceProtocol {
             let error = NSError(domain: "Test", code: 0, userInfo: nil)
             completion(.failure(error))
         } else {
-            self.albumName = albumName
             completion(.success(albums))
         }
     }
 }
+
