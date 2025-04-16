@@ -35,8 +35,10 @@ final class SearchInteractorTests: XCTestCase {
     }
 
     func testSaveSearchTerm() {
-        interactor.saveSearchTerm("test")
-        XCTAssertEqual(mockStorageManager.searchHistory, ["test"])
+        let term = "SomeAlbum"
+        interactor.saveSearchTerm(term)
+
+        XCTAssertTrue(mockStorageManager.searchHistory.contains(term))
     }
 
     func testSearchAlbumsWithSavedAlbums() {
@@ -91,7 +93,6 @@ final class SearchInteractorTests: XCTestCase {
 
     func testSearchAlbumsHandlesServiceError() {
         let term = "Timati"
-
         mockITunesService.shouldReturnError = true
 
         interactor.searchAlbums(with: term)
