@@ -8,7 +8,7 @@
 import Foundation
 @testable import iTunesUserDefaultsVIPER
 
-final class MockSearchPresenter: SearchInteractorOutputProtocol {
+final class MockSearchPresenter {
     private(set) var fetchedAlbums: [Album]?
     private(set) var failedError: String?
 
@@ -16,7 +16,10 @@ final class MockSearchPresenter: SearchInteractorOutputProtocol {
     private(set) var searchFromHistoryTerm: String?
     private(set) var didTypeSearchQuery: String?
     private(set) var didSelectAlbumWith: Album?
+}
 
+// MARK: - SearchInteractorOutputProtocol
+extension MockSearchPresenter: SearchInteractorOutputProtocol {
     func didFetchAlbums(_ albums: [Album]) {
         fetchedAlbums = albums
     }
@@ -26,6 +29,7 @@ final class MockSearchPresenter: SearchInteractorOutputProtocol {
     }
 }
 
+// MARK: - SearchViewOutputProtocol
 extension MockSearchPresenter: SearchViewOutputProtocol {
     func searchButtonClicked(with term: String?) {
         searchButtonClickedTerm = term
