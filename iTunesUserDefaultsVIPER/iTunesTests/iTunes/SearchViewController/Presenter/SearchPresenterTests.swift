@@ -56,7 +56,7 @@ final class SearchPresenterTests: XCTestCase {
         XCTAssertEqual(mockInteractor.searchQueries.count, 1)
     }
 
-    func testDidSelectAlbum_navigatesToAlbumDetails() {
+    func testDidSelectAlbumNavigatesToAlbumDetails() {
         let album = Album(artistId: 111051,
                           artistName: "Eminem",
                           collectionName: "The Eminem Show",
@@ -90,7 +90,7 @@ final class SearchPresenterTests: XCTestCase {
         XCTAssertEqual(mockView.albums, albums)
     }
 
-    func test_didFailToFetchAlbums_callsViewShowError() {
+    func testDidFailToFetchAlbumsCallsViewShowError() {
         let errorMessage = "Error Message"
 
         presenter.didFailToFetchAlbums(errorMessage)

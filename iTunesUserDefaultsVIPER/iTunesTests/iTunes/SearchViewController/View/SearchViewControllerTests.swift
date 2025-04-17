@@ -1,0 +1,98 @@
+//
+//  SearchViewControllerTests.swift
+//  iTunesUserDefaultsVIPER
+//
+//  Created by Ибрагим Габибли on 17.04.2025.
+//
+
+import XCTest
+import ViewControllerPresentationSpy
+@testable import iTunesUserDefaultsVIPER
+
+final class SearchViewControllerTests: XCTestCase {
+    private var mockPresenter: MockSearchPresenter!
+    private var mockDataSource: MockSearchDataSource!
+    private var viewController: SearchViewController!
+
+    override func setUp() {
+        super.setUp()
+        mockPresenter = MockSearchPresenter()
+        mockDataSource = MockSearchDataSource()
+        viewController = SearchViewController(
+            presenter: mockPresenter,
+            collectionViewDataSource: mockDataSource
+        )
+    }
+    
+    override func tearDown() {
+        mockPresenter = nil
+        mockDataSource = nil
+        viewController = nil
+        super.tearDown()
+    }
+
+    func testUpdateAlbumsSetsAlbumsAndReloadsCollectionView() {
+        let albums = [
+            Album(artistId: 111051,
+                  artistName: "Eminem",
+                  collectionName: "The Eminem Show",
+                  artworkUrl100: "url_to_image",
+                  collectionPrice: 10.99
+                 ),
+            Album(artistId: 20044,
+                  artistName: "Eminem",
+                  collectionName: "Levitating",
+                  artworkUrl100: "url_to_image",
+                  collectionPrice: 9.99
+                 )
+        ]
+
+        viewController.updateAlbums(albums)
+
+        XCTAssertEqual(mockDataSource.albums.count, 2)
+    }
+    
+    @MainActor func testShowErrorDisplaysAlert() {
+        let errorMessage = "Test Error"
+        let alertVerifier = AlertVerifier()
+
+        viewController.showError(errorMessage)
+
+        alertVerifier.verify(
+            title: "Error",
+            message: "Test Error",
+            animated: true,
+            actions: [
+                .default("OK")
+            ],
+            presentingViewController: viewController
+        )
+    }
+
+    func testPerformSearchHidesSearchBarAndCallsPresenter() {
+        let term = "SomeTerm"
+
+        viewController.searchBar.isHidden = false
+        viewController.performSearch(with: term)
+
+        XCTAssertTrue(viewController.searchBar.isHidden)
+        XCTAssertEqual(mockPresenter.searchFromHistoryTerm, term)
+    }
+    
+    func testSearchBarSearchButtonClickedCallsPresenter() {
+        let term = "SomeTerm"
+
+        viewController.searchBar.text = term
+        viewController.searchBarSearchButtonClicked(viewController.searchBar)
+
+        XCTAssertEqual(mockPresenter.searchButtonClickedTerm, term)
+    }
+    
+    func testSearchBarTextDidChangeCallsPresenterWithCorrectText() {
+        let term = "SomeTerm"
+
+        viewController.searchBar(viewController.searchBar, textDidChange: term)
+
+        XCTAssertEqual(mockPresenter.didTypeSearchTerm, term)
+    }
+}
