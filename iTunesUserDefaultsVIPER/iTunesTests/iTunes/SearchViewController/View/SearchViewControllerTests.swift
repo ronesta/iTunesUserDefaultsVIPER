@@ -93,6 +93,6 @@ final class SearchViewControllerTests: XCTestCase {
 
         viewController.searchBar(viewController.searchBar, textDidChange: term)
 
-        XCTAssertEqual(mockPresenter.didTypeSearchTerm, term)
+        XCTAssertEqual(mockPresenter.didTypeSearchQuery, term)
     }
 }

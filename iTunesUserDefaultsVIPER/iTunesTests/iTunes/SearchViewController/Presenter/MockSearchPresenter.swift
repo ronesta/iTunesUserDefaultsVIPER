@@ -14,7 +14,7 @@ final class MockSearchPresenter: SearchInteractorOutputProtocol {
 
     private(set) var searchButtonClickedTerm: String?
     private(set) var searchFromHistoryTerm: String?
-    private(set) var didTypeSearchTerm: String?
+    private(set) var didTypeSearchQuery: String?
     private(set) var didSelectAlbumWith: Album?
 
     func didFetchAlbums(_ albums: [Album]) {
@@ -36,7 +36,7 @@ extension MockSearchPresenter: SearchViewOutputProtocol {
     }
 
     func didTypeSearch(_ text: String) {
-        didTypeSearchTerm = text
+        didTypeSearchQuery = text
     }
 
     func didSelectAlbum(_ album: Album) {
