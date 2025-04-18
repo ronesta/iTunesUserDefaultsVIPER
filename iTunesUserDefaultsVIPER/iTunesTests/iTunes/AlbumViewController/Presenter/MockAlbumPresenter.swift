@@ -8,12 +8,18 @@
 import UIKit.UIImage
 @testable import iTunesUserDefaultsVIPER
 
-final class MockAlbumPresenter: AlbumInteractorOutputProtocol {
+final class MockAlbumPresenter: AlbumInteractorOutputProtocol, AlbumViewOutputProtocol {
     private(set) var receivedAlbum: Album?
     private(set) var receivedImage: UIImage?
+
+    private(set) var viewDidLoadCalled = false
 
     func didFetchAlbumDetails(album: Album, image: UIImage) {
         receivedAlbum = album
         receivedImage = image
+    }
+
+    func viewDidLoad() {
+        viewDidLoadCalled = true
     }
 }
