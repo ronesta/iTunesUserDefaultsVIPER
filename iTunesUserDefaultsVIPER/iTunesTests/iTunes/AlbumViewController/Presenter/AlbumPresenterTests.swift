@@ -42,7 +42,7 @@ final class AlbumPresenterTests: XCTestCase {
         XCTAssertEqual(mockInteractor.receivedAlbum, mockAlbum)
     }
     
-    func test_didFetchAlbumDetails_displaysAlbumAndImageOnView() {
+    func testDidFetchAlbumDetailsDisplaysAlbumOnView() {
         let image = UIImage()
 
         presenter.didFetchAlbumDetails(album: mockAlbum, image: image)
