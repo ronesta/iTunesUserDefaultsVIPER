@@ -34,11 +34,15 @@ final class SearchInteractorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testSaveSearchTerm() {
+    func test_GivenSearchTerm_WhenSaveSearchTerm_ThenTermIsSavedInStorage() {
+        // Given
         let term = "SomeAlbum"
+
+        // When
         interactor.saveSearchTerm(term)
 
-        XCTAssertTrue(mockStorageManager.searchHistory.contains(term))
+        // Then
+        XCTAssertEqual(mockStorageManager.searchHistory.first, term)
     }
 
     func test_GivenSavedAlbums_WhenSearchAlbums_ThenAlbumsAreDisplayedFromStorage() {
