@@ -31,45 +31,62 @@ final class SearchPresenterTests: XCTestCase {
         super.tearDown()
     }
 
-    func testDidTypeSearchCallsInteractor() {
+    func test_GivenSearchTerm_WhenDidTypeSearch_ThenInteractorSearchAlbumsIsCalled() {
+        // Given
         let term = "DidTypeSearch"
+
+        // When
         presenter.didTypeSearch(term)
 
-        XCTAssertTrue(mockInteractor.searchQueries.contains(term))
-        XCTAssertEqual(mockInteractor.searchQueries.count, 1)
+        // Then
+        XCTAssertEqual(mockInteractor.searchAlbumsArgsTerms.first, term)
+        XCTAssertEqual(mockInteractor.searchAlbumsCallCount, 1)
     }
 
-    func testSearchButtonClickedCallsInteractor() {
+    func test_GivenSearchTerm_WhenSearchButtonClicked_ThenInteractorSearchAlbumsAndSaveSearchTermAreCalled() {
+        // Given
         let term = "SearchButtonClicked"
+
+        // When
         presenter.searchButtonClicked(with: term)
 
-        XCTAssertTrue(mockInteractor.searchQueries.contains(term))
-        XCTAssertTrue(mockInteractor.searchHistory.contains(term))
-        XCTAssertEqual(mockInteractor.searchQueries.count, 1)
+        // Then
+        XCTAssertEqual(mockInteractor.searchAlbumsArgsTerms.first, term)
+        XCTAssertEqual(mockInteractor.saveSearchTermArgsTerms.first, term)
+        XCTAssertEqual(mockInteractor.searchAlbumsCallCount, 1)
     }
 
-    func testSearchFromHistoryCallsInteractor() {
+    func test_GivenHistoryTerm_WhenSearchFromHistory_ThenInteractorSearchAlbumsIsCalled() {
+        // Given
         let term = "SearchFromHistory"
+
+        // When
         presenter.searchFromHistory(with: term)
 
-        XCTAssertTrue(mockInteractor.searchQueries.contains(term))
-        XCTAssertEqual(mockInteractor.searchQueries.count, 1)
+        // Then
+        XCTAssertEqual(mockInteractor.searchAlbumsArgsTerms.first, term)
+        XCTAssertEqual(mockInteractor.searchAlbumsCallCount, 1)
     }
 
-    func testDidSelectAlbumNavigatesToAlbumDetails() {
+    func test_GivenAlbum_WhenDidSelectAlbum_ThenRouterNavigatesToAlbumDetails() {
+        // Given
         let album = Album(artistId: 111051,
                           artistName: "Eminem",
                           collectionName: "The Eminem Show",
                           artworkUrl100: "url_to_image",
                           collectionPrice: 10.99
-                         )
+        )
 
+        // When
         presenter.didSelectAlbum(album)
 
-        XCTAssertEqual(mockRouter.navigatedAlbum, album)
+        // Then
+        XCTAssertEqual(mockRouter.navigateToAlbumDetailsCallCount, 1)
+        XCTAssertEqual(mockRouter.navigateToAlbumDetailsArgsAlbums.first, album)
     }
 
-    func testDidFetchAlbumsCallsViewUpdateAlbums() {
+    func test_GivenFetchedAlbums_WhenDidFetchAlbums_ThenViewUpdateAlbumsIsCalled() {
+        // Given
         let albums = [
             Album(artistId: 111051,
                   artistName: "Eminem",
@@ -85,16 +102,23 @@ final class SearchPresenterTests: XCTestCase {
                  )
         ]
 
+        // When
         presenter.didFetchAlbums(albums)
 
-        XCTAssertEqual(mockView.albums, albums)
+        // Then
+        XCTAssertEqual(mockView.updateAlbumsCallCount, 1)
+        XCTAssertEqual(mockView.updateAlbumsArgsAlbums.first, albums)
     }
 
-    func testDidFailToFetchAlbumsCallsViewShowError() {
+    func test_GivenErrorMessage_WhenDidFailToFetchAlbums_ThenViewShowErrorIsCalled() {
+        // Given
         let errorMessage = "Error Message"
 
+        // When
         presenter.didFailToFetchAlbums(errorMessage)
 
-        XCTAssertEqual(mockView.errorMessage, errorMessage)
+        // Then
+        XCTAssertEqual(mockView.showErrorCallCount, 1)
+        XCTAssertEqual(mockView.showErrorArgsMessages.first, errorMessage)
     }
 }

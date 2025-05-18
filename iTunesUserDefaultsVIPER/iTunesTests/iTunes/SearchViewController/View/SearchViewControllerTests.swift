@@ -10,9 +10,9 @@ import ViewControllerPresentationSpy
 @testable import iTunesUserDefaultsVIPER
 
 final class SearchViewControllerTests: XCTestCase {
+    private var viewController: SearchViewController!
     private var mockPresenter: MockSearchPresenter!
     private var mockDataSource: MockSearchDataSource!
-    private var viewController: SearchViewController!
 
     override func setUp() {
         super.setUp()
@@ -23,15 +23,41 @@ final class SearchViewControllerTests: XCTestCase {
             collectionViewDataSource: mockDataSource
         )
     }
-    
+
     override func tearDown() {
+        viewController = nil
         mockPresenter = nil
         mockDataSource = nil
-        viewController = nil
         super.tearDown()
     }
 
-    func testUpdateAlbumsSetsAlbumsAndReloadsCollectionView() {
+    func test_GivenSearchBar_WhenSearchButtonClicked_ThenPresenterReceivesSearchTerm() {
+        // Given
+        let term = "Test Search"
+        viewController.searchBar.text = term
+
+        // When
+        viewController.searchBarSearchButtonClicked(viewController.searchBar)
+
+        // Then
+        XCTAssertEqual(mockPresenter.searchButtonClickedCallCount, 1)
+        XCTAssertEqual(mockPresenter.searchButtonClickedArgsTerms.first, term)
+    }
+
+    func test_GivenSearchBar_WhenTextDidChange_ThenPresenterReceivesTypedQuery() {
+        // Given
+        let term = "New Search"
+
+        // When
+        viewController.searchBar(viewController.searchBar, textDidChange: term)
+
+        // Then
+        XCTAssertEqual(mockPresenter.didTypeSearchCallCount, 1)
+        XCTAssertEqual(mockPresenter.didTypeSearchArgsQueries.first, term)
+    }
+
+    func test_GivenAlbums_WhenUpdateAlbumsCalled_ThenDataSourceIsUpdated() {
+        // Given
         let albums = [
             Album(artistId: 111051,
                   artistName: "Eminem",
@@ -47,17 +73,23 @@ final class SearchViewControllerTests: XCTestCase {
                  )
         ]
 
+        // When
         viewController.updateAlbums(albums)
 
-        XCTAssertEqual(mockDataSource.albums.count, 2)
+        // Then
+        XCTAssertEqual(mockDataSource.albums, albums)
     }
-    
-    @MainActor func testShowErrorDisplaysAlert() {
+
+    @MainActor
+    func test_GivenError_WhenShowErrorCalled_ThenAlertIsDisplayed() {
+        // Given
         let errorMessage = "Test Error"
         let alertVerifier = AlertVerifier()
 
+        // When
         viewController.showError(errorMessage)
 
+        // Then
         alertVerifier.verify(
             title: "Error",
             message: "Test Error",
@@ -69,30 +101,17 @@ final class SearchViewControllerTests: XCTestCase {
         )
     }
 
-    func testPerformSearchHidesSearchBarAndCallsPresenter() {
+    func test_GivenVisibleSearchBar_WhenPerformSearchCalled_ThenSearchBarIsHiddenAndPresenterIsCalled() {
+        // Given
         let term = "SomeTerm"
-
         viewController.searchBar.isHidden = false
+
+        // When
         viewController.performSearch(with: term)
 
+        // Then
         XCTAssertTrue(viewController.searchBar.isHidden)
-        XCTAssertEqual(mockPresenter.searchFromHistoryTerm, term)
-    }
-    
-    func testSearchBarSearchButtonClickedCallsPresenter() {
-        let term = "SomeTerm"
-
-        viewController.searchBar.text = term
-        viewController.searchBarSearchButtonClicked(viewController.searchBar)
-
-        XCTAssertEqual(mockPresenter.searchButtonClickedTerm, term)
-    }
-    
-    func testSearchBarTextDidChangeCallsPresenterWithCorrectText() {
-        let term = "SomeTerm"
-
-        viewController.searchBar(viewController.searchBar, textDidChange: term)
-
-        XCTAssertEqual(mockPresenter.didTypeSearchQuery, term)
+        XCTAssertEqual(mockPresenter.searchFromHistoryCallCount, 1)
+        XCTAssertEqual(mockPresenter.searchFromHistoryArgsTerms.first, term)
     }
 }

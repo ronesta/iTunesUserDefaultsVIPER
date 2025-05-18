@@ -9,14 +9,19 @@ import Foundation
 @testable import iTunesUserDefaultsVIPER
 
 final class MockSearchInteractor: SearchInteractorInputProtocol {
-    private(set) var searchQueries = [String]()
-    private(set) var searchHistory = [String]()
+    private(set) var searchAlbumsCallCount = 0
+    private(set) var searchAlbumsArgsTerms = [String]()
+
+    private(set) var saveSearchTermCallCount = 0
+    private(set) var saveSearchTermArgsTerms = [String]()
 
     func searchAlbums(with term: String) {
-        searchQueries.append(term)
+        searchAlbumsCallCount += 1
+        searchAlbumsArgsTerms.append(term)
     }
 
     func saveSearchTerm(_ term: String) {
-        searchHistory.append(term)
+        saveSearchTermCallCount += 1
+        saveSearchTermArgsTerms.append(term)
     }
 }

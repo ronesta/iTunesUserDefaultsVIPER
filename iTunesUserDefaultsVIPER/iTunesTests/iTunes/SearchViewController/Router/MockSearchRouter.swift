@@ -9,9 +9,11 @@ import Foundation
 @testable import iTunesUserDefaultsVIPER
 
 final class MockSearchRouter: SearchRouterProtocol {
-    private(set) var navigatedAlbum: Album?
+    private(set) var navigateToAlbumDetailsCallCount = 0
+    private(set) var navigateToAlbumDetailsArgsAlbums = [Album]()
 
     func navigateToAlbumDetails(with album: Album) {
-        navigatedAlbum = album
+        navigateToAlbumDetailsCallCount += 1
+        navigateToAlbumDetailsArgsAlbums.append(album)
     }
 }

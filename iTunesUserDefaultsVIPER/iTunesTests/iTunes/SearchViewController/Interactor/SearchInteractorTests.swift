@@ -41,9 +41,9 @@ final class SearchInteractorTests: XCTestCase {
         XCTAssertTrue(mockStorageManager.searchHistory.contains(term))
     }
 
-    func testSearchAlbumsWithSavedAlbums() {
+    func test_GivenSavedAlbums_WhenSearchAlbums_ThenAlbumsAreDisplayedFromStorage() {
+        // Given
         let term = "SavedAlbums"
-
         let albums = [
             Album(artistId: 111051,
                   artistName: "Eminem",
@@ -60,12 +60,15 @@ final class SearchInteractorTests: XCTestCase {
         ]
 
         mockStorageManager.saveAlbums(albums, for: term)
+
+        // When
         interactor.searchAlbums(with: term)
 
+        // Then
         let savedAlbums = mockStorageManager.loadAlbums(for: term)
         XCTAssertEqual(savedAlbums, albums)
-
-        XCTAssertEqual(mockPresenter.fetchedAlbums, albums)
+        XCTAssertEqual(mockPresenter.didFetchAlbumsCallCount, 1)
+        XCTAssertEqual(mockPresenter.didFetchAlbumsArgs.first, albums)
     }
 
     func test_GivenNewAlbums_WhenSearchAlbums_ThenAlbumsAreFetchedAndDisplayed() {
@@ -86,8 +89,9 @@ final class SearchInteractorTests: XCTestCase {
         interactor.searchAlbums(with: term)
 
         // Then
-        XCTAssertEqual(mockPresenter.fetchedAlbums, albums)
-        XCTAssertNil(mockPresenter.failedError)
+        XCTAssertEqual(mockPresenter.didFetchAlbumsCallCount, 1)
+        XCTAssertEqual(mockPresenter.didFetchAlbumsArgs.first, albums)
+        XCTAssertEqual(mockPresenter.didFailToFetchAlbumsCallCount, 0)
 
         let savedAlbums = mockStorageManager.loadAlbums(for: term)
         XCTAssertEqual(savedAlbums, albums)
