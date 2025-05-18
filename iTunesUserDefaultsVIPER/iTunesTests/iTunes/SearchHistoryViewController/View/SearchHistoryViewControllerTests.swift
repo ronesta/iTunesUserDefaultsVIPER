@@ -9,9 +9,9 @@ import XCTest
 @testable import iTunesUserDefaultsVIPER
 
 final class SearchHistoryViewControllerTests: XCTestCase {
+    private var viewController: SearchHistoryViewController!
     private var mockPresenter: MockSearchHistoryPresenter!
     private var mockDataSource: MockSearchHistoryDataSource!
-    private var viewController: SearchHistoryViewController!
 
     override func setUp() {
         super.setUp()
@@ -24,22 +24,30 @@ final class SearchHistoryViewControllerTests: XCTestCase {
     }
 
     override func tearDown() {
+        viewController = nil
         mockPresenter = nil
         mockDataSource = nil
-        viewController = nil
         super.tearDown()
     }
 
-    func testViewWillAppearCallsPresenterViewDidLoad() {
+    func test_GivenViewController_WhenViewWillAppear_ThenPresenterViewDidLoadIsCalled() {
+        // Given viewController with a mockPresenter
+
+        // When
         viewController.viewWillAppear(false)
 
+        // Then
         XCTAssertEqual(mockPresenter.viewDidLoadCallCount, 1)
     }
 
-    func testUpdateSearchHistoryReloadsTableView() {
+    func test_GivenSearchHistory_WhenUpdateSearchHistory_ThenTableViewDataSourceIsUpdated() {
+        // Given
         let searchHistory = ["Search1", "Search2"]
+
+        // When
         viewController.updateSearchHistory(searchHistory)
 
+        // Then
         XCTAssertEqual(mockDataSource.searchHistory, searchHistory)
     }
 }

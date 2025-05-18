@@ -51,7 +51,8 @@ final class SearchHistoryPresenterTests: XCTestCase {
         presenter.didSelectAlbum(with: term)
 
         // Then
-        XCTAssertEqual(mockRouter.performedSearchTerm, term)
+        XCTAssertEqual(mockRouter.performSearchCallCount, 1)
+        XCTAssertEqual(mockRouter.performSearchArgsTerms.first, term)
     }
 
     func test_GivenPresenter_WhenDidFetchSearchHistory_ThenViewIsUpdated() {
@@ -62,6 +63,7 @@ final class SearchHistoryPresenterTests: XCTestCase {
         presenter.didFetchSearchHistory(searchHistory)
 
         // Then
-        XCTAssertEqual(mockView.updatedSearchHistory, searchHistory)
+        XCTAssertEqual(mockView.updateSearchHistoryCallCount, 1)
+        XCTAssertEqual(mockView.updateSearchHistoryArgsHistory.first, searchHistory)
     }
 }

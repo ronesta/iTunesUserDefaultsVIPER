@@ -9,9 +9,11 @@ import Foundation
 @testable import iTunesUserDefaultsVIPER
 
 final class MockHistoryRouter: SearchHistoryRouterProtocol {
-    private(set) var performedSearchTerm: String?
+    private(set) var performSearchCallCount = 0
+    private(set) var performSearchArgsTerms = [String]()
 
     func performSearch(with term: String) {
-        performedSearchTerm = term
+        performSearchCallCount += 1
+        performSearchArgsTerms.append(term)
     }
 }
