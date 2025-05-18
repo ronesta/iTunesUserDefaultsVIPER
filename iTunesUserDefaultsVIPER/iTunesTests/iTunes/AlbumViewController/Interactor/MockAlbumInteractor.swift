@@ -9,9 +9,11 @@ import UIKit.UIImage
 @testable import iTunesUserDefaultsVIPER
 
 final class MockAlbumInteractor: AlbumInteractorInputProtocol {
-    private(set) var receivedAlbum: Album?
-    
+    private(set) var loadAlbumDetailsCallCount = 0
+    private(set) var loadAlbumDetailsArgsAlbums = [Album]()
+
     func loadAlbumDetails(for album: Album) {
-        receivedAlbum = album
+        loadAlbumDetailsCallCount += 1
+        loadAlbumDetailsArgsAlbums.append(album)
     }
 }

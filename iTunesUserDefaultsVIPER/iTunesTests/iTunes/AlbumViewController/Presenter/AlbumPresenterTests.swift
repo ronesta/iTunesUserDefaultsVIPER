@@ -21,13 +21,13 @@ final class AlbumPresenterTests: XCTestCase {
                           collectionName: "The Eminem Show",
                           artworkUrl100: "url_to_image",
                           collectionPrice: 10.99
-                         )
+        )
         mockInteractor = MockAlbumInteractor()
         presenter = AlbumPresenter(interactor: mockInteractor, album: mockAlbum)
         mockView = MockAlbumView()
         presenter.view = mockView
     }
-    
+
     override func tearDown() {
         presenter = nil
         mockView = nil
@@ -36,18 +36,26 @@ final class AlbumPresenterTests: XCTestCase {
         super.tearDown()
     }
 
-    func testViewDidLoadCallsInteractorWithAlbum() {
+    func test_GivenPresenter_WhenViewDidLoad_ThenCallsInteractorWithAlbum() {
+        // Given presenter
+
+        // When
         presenter.viewDidLoad()
 
-        XCTAssertEqual(mockInteractor.receivedAlbum, mockAlbum)
+        // Then
+        XCTAssertEqual(mockInteractor.loadAlbumDetailsArgsAlbums.first, mockAlbum)
     }
-    
-    func testDidFetchAlbumDetailsDisplaysAlbumOnView() {
+
+    func test_GivenPresenter_WhenDidFetchAlbumDetails_ThenDisplaysAlbumOnView() {
+        // Given
         let image = UIImage()
 
+        // When
         presenter.didFetchAlbumDetails(album: mockAlbum, image: image)
 
-        XCTAssertEqual(mockView.displayedAlbum, mockAlbum)
-        XCTAssertEqual(mockView.displayedImage, image)
+        // Then
+        XCTAssertEqual(mockView.displayAlbumDetailsCallCount, 1)
+        XCTAssertEqual(mockView.displayAlbumDetailsArgsAlbums.first, mockAlbum)
+        XCTAssertEqual(mockView.displayAlbumDetailsArgsImages.first, image)
     }
 }

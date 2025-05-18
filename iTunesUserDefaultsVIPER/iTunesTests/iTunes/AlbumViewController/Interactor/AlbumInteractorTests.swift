@@ -28,19 +28,23 @@ final class AlbumInteractorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testLoadAlbumDetailsCallsPresenterWithData() {
+    func test_GivenAlbumAndImage_WhenLoadAlbumDetails_ThenAlbumDetailsAreDisplayed() {
+        // Given
         let mockAlbum = Album(artistId: 111051,
-                          artistName: "Eminem",
-                          collectionName: "The Eminem Show",
-                          artworkUrl100: "url_to_image",
-                          collectionPrice: 10.99
-                         )
+                              artistName: "Eminem",
+                              collectionName: "The Eminem Show",
+                              artworkUrl100: "url_to_image",
+                              collectionPrice: 10.99
+        )
         let mockImage = UIImage(systemName: "checkmark.diamond")
-
         mockImageLoader.mockImage = mockImage
+
+        // When
         interactor.loadAlbumDetails(for: mockAlbum)
 
-        XCTAssertEqual(mockPresenter.receivedAlbum, mockAlbum)
-        XCTAssertTrue(mockPresenter.receivedImage === mockImage)
+        // Then
+        XCTAssertEqual(mockPresenter.didFetchAlbumDetailsCallCount, 1)
+        XCTAssertEqual(mockPresenter.didFetchAlbumDetailsArgsAlbums.first, mockAlbum)
+        XCTAssertEqual(mockPresenter.didFetchAlbumDetailsArgsImages.first, mockImage)
     }
 }

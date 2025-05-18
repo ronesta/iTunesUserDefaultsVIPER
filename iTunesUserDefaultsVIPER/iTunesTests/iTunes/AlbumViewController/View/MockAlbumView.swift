@@ -9,11 +9,13 @@ import UIKit.UIImage
 @testable import iTunesUserDefaultsVIPER
 
 final class MockAlbumView: AlbumViewInputProtocol {
-    private(set) var displayedAlbum: Album?
-    private(set) var displayedImage: UIImage?
+    private(set) var displayAlbumDetailsCallCount = 0
+    private(set) var displayAlbumDetailsArgsAlbums = [Album]()
+    private(set) var displayAlbumDetailsArgsImages = [UIImage]()
 
     func displayAlbumDetails(album: Album, image: UIImage) {
-        displayedAlbum = album
-        displayedImage = image
+        displayAlbumDetailsCallCount += 1
+        displayAlbumDetailsArgsAlbums.append(album)
+        displayAlbumDetailsArgsImages.append(image)
     }
 }
