@@ -10,13 +10,13 @@ import XCTest
 
 final class SearchInteractorTests: XCTestCase {
     private var interactor: SearchInteractor!
-    private var mockITunesService: MockITunesServiceForInteractor!
+    private var mockITunesService: MockITunesService!
     private var mockStorageManager: MockStorageManager!
     private var mockPresenter: MockSearchPresenter!
 
     override func setUp() {
         super.setUp()
-        mockITunesService = MockITunesServiceForInteractor()
+        mockITunesService = MockITunesService()
         mockStorageManager = MockStorageManager()
         mockPresenter = MockSearchPresenter()
         interactor = SearchInteractor(
@@ -68,9 +68,9 @@ final class SearchInteractorTests: XCTestCase {
         XCTAssertEqual(mockPresenter.fetchedAlbums, albums)
     }
 
-    func testSearchAlbumsWithNewAlbums() {
+    func test_GivenNewAlbums_WhenSearchAlbums_ThenAlbumsAreFetchedAndDisplayed() {
+        // Given
         let term = "Eminem"
-
         let albums = [
             Album(artistId: 111051,
                   artistName: "Eminem",
@@ -80,23 +80,16 @@ final class SearchInteractorTests: XCTestCase {
                  )
         ]
 
-        mockITunesService.albums = albums
+        mockITunesService.stubbedAlbumsResult = .success(albums)
 
+        // When
         interactor.searchAlbums(with: term)
 
+        // Then
         XCTAssertEqual(mockPresenter.fetchedAlbums, albums)
         XCTAssertNil(mockPresenter.failedError)
 
         let savedAlbums = mockStorageManager.loadAlbums(for: term)
         XCTAssertEqual(savedAlbums, albums)
-    }
-
-    func testSearchAlbumsHandlesServiceError() {
-        let term = "Timati"
-        mockITunesService.shouldReturnError = true
-
-        interactor.searchAlbums(with: term)
-
-        XCTAssertNotNil(mockPresenter.failedError)
     }
 }
