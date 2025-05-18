@@ -33,7 +33,7 @@ final class SearchHistoryViewControllerTests: XCTestCase {
     func testViewWillAppearCallsPresenterViewDidLoad() {
         viewController.viewWillAppear(false)
 
-        XCTAssertTrue(mockPresenter.viewDidLoadCalled)
+        XCTAssertEqual(mockPresenter.viewDidLoadCallCount, 1)
     }
 
     func testUpdateSearchHistoryReloadsTableView() {

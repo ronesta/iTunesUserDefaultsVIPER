@@ -24,7 +24,7 @@ final class SearchHistoryPresenterTests: XCTestCase {
         )
         presenter.view = mockView
     }
-    
+
     override func tearDown() {
         presenter = nil
         mockView = nil
@@ -33,24 +33,35 @@ final class SearchHistoryPresenterTests: XCTestCase {
         super.tearDown()
     }
 
-    func testViewDidLoadCallsInteractor() {
+    func test_GivenPresenter_WhenViewDidLoad_ThenInteractorIsCalled() {
+        // Given presenter
+
+        // When
         presenter.viewDidLoad()
 
+        // Then
         XCTAssertTrue(mockInteractor.loadSearchHistoryCalled)
     }
-    
-    func testDidSelectAlbumCallsRouterPerformSearch() {
+
+    func test_GivenPresenter_WhenDidSelectAlbum_ThenRouterPerformSearchIsCalledWithTerm() {
+        // Given
         let term = "DidSelectAlbum"
+
+        // When
         presenter.didSelectAlbum(with: term)
 
+        // Then
         XCTAssertEqual(mockRouter.performedSearchTerm, term)
     }
-    
-    func testDidFetchSearchHistoryUpdatesView() {
+
+    func test_GivenPresenter_WhenDidFetchSearchHistory_ThenViewIsUpdated() {
+        // Given
         let searchHistory = ["Search1", "Search2"]
 
+        // When
         presenter.didFetchSearchHistory(searchHistory)
 
+        // Then
         XCTAssertEqual(mockView.updatedSearchHistory, searchHistory)
     }
 }

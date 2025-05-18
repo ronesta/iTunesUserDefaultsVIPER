@@ -28,16 +28,19 @@ final class SearchHistoryInteractorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testLoadSearchHistoryCallsStorageManager() {
+    func test_GivenSavedSearchTerms_WhenLoadSearchHistory_ThenSearchHistoryIsUpdated() {
+        // Given
         let searchHistory = ["Search1", "Search2"]
 
         searchHistory.forEach { term in
             mockStorageManager.saveSearchTerm(term)
         }
 
+        // When
         interactor.loadSearchHistory()
 
+        // Then
         XCTAssertEqual(mockStorageManager.searchHistory, searchHistory)
-        XCTAssertEqual(mockPresenter.fetchedHistory, searchHistory)
+        XCTAssertEqual(mockPresenter.didFetchSearchHistoryArgs.first, searchHistory)
     }
 }

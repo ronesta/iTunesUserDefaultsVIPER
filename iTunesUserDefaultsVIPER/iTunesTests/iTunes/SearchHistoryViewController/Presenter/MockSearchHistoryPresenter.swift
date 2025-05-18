@@ -9,27 +9,32 @@ import Foundation
 @testable import iTunesUserDefaultsVIPER
 
 final class MockSearchHistoryPresenter {
-    private(set) var fetchedHistory: [String]?
+    // MARK SearchHistoryInteractorOutputProtocol
+    private(set) var didFetchSearchHistoryCallCount = 0
+    private(set) var didFetchSearchHistoryArgs = [[String]]()
 
-    private(set) var viewDidLoadCalled = false
-    private(set) var selectedTerm: String? = nil
+    // MARK SearchHistoryViewOutputProtocol
+    private(set) var viewDidLoadCallCount = 0
+    private(set) var didSelectAlbumCallCount = 0
+    private(set) var didSelectAlbumArgsTerms = [String]()
 }
 
-// MARK: - SearchHistoryInteractorOutputProtocol
+// MARK SearchHistoryInteractorOutputProtocol
 extension MockSearchHistoryPresenter: SearchHistoryInteractorOutputProtocol {
-
     func didFetchSearchHistory(_ history: [String]) {
-        fetchedHistory = history
+        didFetchSearchHistoryCallCount += 1
+        didFetchSearchHistoryArgs.append(history)
     }
 }
 
-// MARK: - SearchHistoryViewOutputProtocol
+// MARK SearchHistoryViewOutputProtocol
 extension MockSearchHistoryPresenter: SearchHistoryViewOutputProtocol {
     func viewDidLoad() {
-        viewDidLoadCalled = true
+        viewDidLoadCallCount += 1
     }
 
     func didSelectAlbum(with term: String) {
-        selectedTerm = term
+        didSelectAlbumCallCount += 1
+        didSelectAlbumArgsTerms.append(term)
     }
 }
